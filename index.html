@@ -666,6 +666,11 @@ history = client.beta.conversations.get_history(conversation_id=conv.conversatio
   <div class="attribution">Created by Han HELOIR YAN</div>
 </div></div>
 
+<figure class="shot">
+  <img src="https://cozypet.github.io/mistral-ai-studio/images/ui-07-run-trace.jpg" alt="A single workflow run traced as a timeline of steps with per step durations and an Inspector showing JSON output">
+  <figcaption><span class="cap-h">A single run, traced.</span> The timeline shows each step and how long it took: a render step at 766ms, a model call at 15s, structured extraction at 5s, about 28s end to end. The left list is the step sequence; the Inspector on the right shows the exact JSON output of the selected step. This is the audit trail you open when a run goes wrong, instead of guessing. Image from the Mistral Studio console.</figcaption>
+</figure>
+
 <h3>The loop closes here</h3>
 <p><strong>Why it matters.</strong> This is the quiet genius of the design. Every execution in the runtime emits telemetry and evaluation data straight back into Observability. The work your agents do becomes the traffic your Judges score becomes the Datasets that improve the next version. Runtime feeds Observability feeds improvement feeds Runtime. The flywheel turns without you carrying buckets between pillars.</p>
 
@@ -708,6 +713,11 @@ history = client.beta.conversations.get_history(conversation_id=conv.conversatio
   <div class="attribution">Created by Han HELOIR YAN</div>
 </div></div>
 
+<figure class="shot">
+  <img src="https://cozypet.github.io/mistral-ai-studio/images/ui-05-workflows-list.jpg" alt="Workflows List view showing defined workflows with status, last execution and execution count">
+  <figcaption><span class="cap-h">Create &gt; Workflows &gt; List.</span> Every workflow you have defined, each with its status, last execution, and total execution count. The left rail also exposes Executions, Deployments, and Schedules, though Deployments and Schedules currently carry a WIP badge. Think of this as the catalog of runnable processes you build on the runtime. Image from the Mistral Studio console.</figcaption>
+</figure>
+
 <p>Execute a workflow and wait for the result, or fire it and inspect later:</p>
 
 <pre><code><span class="tok-c"># Run a registered workflow and block until it finishes</span>
@@ -742,6 +752,11 @@ history = client.workflows.runs.get_run_history(run_id=<span class="tok-s">"run_
   <div class="attribution">Created by Han HELOIR YAN</div>
 </div></div>
 
+<figure class="shot">
+  <img src="https://cozypet.github.io/mistral-ai-studio/images/ui-06-workflow-executions.jpg" alt="Workflows Executions table with statuses Running, Timed Out, Failed, Completed, durations and deployments">
+  <figcaption><span class="cap-h">Workflows &gt; Executions.</span> One row per run, and the Status column tells the real story: Completed, Running, Timed Out, Failed. Durations stretch from three minutes to eight hours, and each run links back to the deployment that produced it. The Failed and Timed Out rows are exactly what a durable runtime lets you find, open, and rerun. Image from the Mistral Studio console.</figcaption>
+</figure>
+
 <p>And because production flows rarely run on demand only, you schedule them. Nightly reconciliation, hourly syncs, a weekly digest.</p>
 
 <pre><code><span class="tok-c"># Schedule the workflow to run every night at 02:00</span>
@@ -770,6 +785,11 @@ client.workflows.schedules.resume_schedule(schedule_id=<span class="tok-s">"sche
   <div class="callout callout-orange">Define once. Run thousands of times. Inspect any one of them.</div>
   <div class="attribution">Created by Han HELOIR YAN</div>
 </div></div>
+
+<figure class="shot">
+  <img src="https://cozypet.github.io/mistral-ai-studio/images/ui-08-workflow-detail.jpg" alt="A single workflow detail page showing deployment, workflow ID, error rate, average latency and an execution history">
+  <figcaption><span class="cap-h">A workflow's operational page.</span> Up top: the deployment it runs under, the workflow ID, an error rate (0 out of 5 here, 0.00%), and average latency (22s). Below, every execution with its status and duration. Share, Publish to Vibe, and Archive sit in the corner. Define once, then watch it run. Image from the Mistral Studio console.</figcaption>
+</figure>
 
 <p>Workflows are where durability stops being an abstract promise and becomes the thing that lets you sleep while a scheduled job retries a flaky downstream API at 3am and recovers on its own.</p>
 
