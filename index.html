@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your AI Demo Works. Now Prove It Won't Embarrass You in Production</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --dark:#141413;--light:#faf9f5;--mid-gray:#b0aea5;--light-gray:#e8e6dc;
+  --orange:#d97757;--blue:#6a9bcc;--green:#788c5d;
+  --dark-soft:#2d2d2a;--dark-muted:#5c5b55;--dark-faint:#8a8880;
+  --orange-soft:#faf0eb;--orange-mid:#ecc4b3;--blue-soft:#eef4f9;--blue-mid:#b8d4e8;
+  --green-soft:#f0f3ec;--green-mid:#c0ccae;--warm-bg:#f2f1ed;--border:#e0ded6;--border-soft:#eae8e2;
+  --red:#b54a3a;--red-soft:#f9efed;--amber:#b8923e;--amber-soft:#f9f3e6;--amber-mid:#dfc88e;
+  --shadow-sm:0 1px 3px rgba(20,20,19,0.04),0 1px 2px rgba(20,20,19,0.03);
+  --shadow-md:0 4px 14px rgba(20,20,19,0.06),0 1px 4px rgba(20,20,19,0.03);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--warm-bg);font-family:'IBM Plex Sans',-apple-system,sans-serif;color:var(--dark-soft);line-height:1.7}
+.page{max-width:760px;margin:0 auto;padding:48px 24px 96px}
+
+/* article typography */
+h1{font-family:'IBM Plex Sans',sans-serif;font-size:34px;font-weight:700;line-height:1.15;letter-spacing:-0.6px;color:var(--dark)}
+.subtitle{font-size:18px;font-weight:400;color:var(--dark-muted);margin-top:12px;line-height:1.45}
+h2{font-size:25px;font-weight:700;letter-spacing:-0.3px;color:var(--dark);margin:52px 0 6px;line-height:1.2}
+h3{font-size:18px;font-weight:600;color:var(--dark);margin:30px 0 4px}
+p{font-size:16px;font-weight:400;color:var(--dark-soft);margin:14px 0}
+.lead{border-left:3px solid var(--orange);padding-left:18px;font-size:16px;color:var(--dark);font-weight:400}
+a{color:var(--orange);text-decoration:none;border-bottom:1px solid var(--orange-mid)}
+.byline{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--mid-gray);margin-top:16px}
+hr.rule{border:none;border-top:1px solid var(--border);margin:40px 0}
+strong{font-weight:600;color:var(--dark)}
+code.inl{font-family:'IBM Plex Mono',monospace;font-size:13.5px;background:var(--orange-soft);color:var(--dark);padding:1px 6px;border-radius:4px;border:1px solid var(--orange-mid)}
+ol,ul{margin:14px 0 14px 4px;padding-left:22px}
+li{font-size:16px;margin:8px 0;color:var(--dark-soft)}
+
+/* screenshots */
+.shot{margin:30px 0}
+.shot img{width:100%;border:1px solid var(--border);border-radius:10px;box-shadow:var(--shadow-md);display:block}
+.shot figcaption{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--mid-gray);margin-top:10px;line-height:1.55}
+.shot figcaption .cap-h{color:var(--dark-soft);font-weight:500}
+
+/* CTA */
+.cta{background:var(--orange-soft);border:1px solid var(--orange-mid);border-radius:10px;padding:18px 20px;margin:24px 0}
+.cta p{margin:0;color:var(--dark);font-size:15px}
+.cta .links{margin-top:8px;font-size:14px}
+
+/* code blocks */
+pre{background:var(--dark);border-radius:10px;padding:18px 20px;overflow-x:auto;margin:18px 0;box-shadow:var(--shadow-sm)}
+pre code{font-family:'IBM Plex Mono',monospace;font-size:13px;line-height:1.6;color:#e8e6dc;white-space:pre}
+.tok-c{color:#8a8880;font-style:italic} /* comment */
+.tok-k{color:#d9a17a} /* keyword-ish */
+.tok-s{color:#a8c08a} /* string */
+
+/* ===== diagram card system ===== */
+.diagram-container{margin:34px 0}
+.card{background:var(--light);border:1px solid var(--border);border-radius:8px;box-shadow:var(--shadow-md);padding:36px 32px 26px;position:relative}
+.card-number{position:absolute;top:18px;right:22px;font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--mid-gray)}
+.card-title{font-size:23px;font-weight:700;letter-spacing:-0.3px;line-height:1.18;color:var(--dark)}
+.card-sub{font-size:14.5px;font-weight:400;color:var(--dark-muted);margin-top:8px;line-height:1.45}
+.card-body{margin-top:24px}
+.attribution{margin-top:22px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--mid-gray)}
+.callout{border-radius:6px;padding:11px 16px;font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:400;line-height:1.45;text-align:center;margin-top:22px}
+.callout-blue{background:var(--blue-soft);color:var(--blue);border:1px solid var(--blue-mid)}
+.callout-green{background:var(--green-soft);color:var(--green);border:1px solid var(--green-mid)}
+.callout-orange{background:var(--orange-soft);color:var(--orange);border:1px solid var(--orange-mid)}
+.callout-neutral{background:var(--light);color:var(--dark-soft);border:1px solid var(--border)}
+.row{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.row.center{justify-content:center}
+.col{display:flex;flex-direction:column;gap:14px}
+.stack{display:flex;flex-direction:column;gap:10px}
+.grow{flex:1}
+.node{background:var(--light);border:1px solid var(--border);border-radius:8px;padding:13px 15px;box-shadow:var(--shadow-sm);min-width:0}
+.node .nt{font-size:14px;font-weight:600;color:var(--dark)}
+.node .nd{font-size:13px;font-weight:300;color:var(--dark-muted);margin-top:4px;line-height:1.4}
+.node.dark{background:var(--dark);border-color:var(--dark)}
+.node.dark .nt{color:var(--light)} .node.dark .nd{color:var(--mid-gray)}
+.node.orange{background:var(--orange-soft);border-color:var(--orange-mid)} .node.orange .nt{color:var(--orange)}
+.node.blue{background:var(--blue-soft);border-color:var(--blue-mid)} .node.blue .nt{color:var(--blue)}
+.node.green{background:var(--green-soft);border-color:var(--green-mid)} .node.green .nt{color:var(--green)}
+.node.amber{background:var(--amber-soft);border-color:var(--amber-mid)} .node.amber .nt{color:var(--amber)}
+.node.red{background:var(--red-soft);border-color:var(--red)} .node.red .nt{color:var(--red)}
+.tag{display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:500;letter-spacing:0.8px;text-transform:uppercase;padding:3px 10px;border-radius:100px}
+.tag.green{background:var(--green-soft);color:var(--green);border:1px solid var(--green-mid)}
+.tag.orange{background:var(--orange-soft);color:var(--orange);border:1px solid var(--orange-mid)}
+.tag.blue{background:var(--blue-soft);color:var(--blue);border:1px solid var(--blue-mid)}
+.tag.red{background:var(--red-soft);color:var(--red);border:1px solid var(--red)}
+.tag.amber{background:var(--amber-soft);color:var(--amber);border:1px solid var(--amber-mid)}
+.tag.gray{background:var(--light);color:var(--dark-faint);border:1px solid var(--border)}
+.pill{display:inline-flex;align-items:center;gap:8px;background:var(--blue-soft);border:1px solid var(--blue-mid);color:var(--blue);border-radius:100px;padding:8px 16px;font-size:14px;font-weight:500}
+.arrow svg{width:26px;height:18px;display:block}
+.chev{font-size:20px;color:var(--mid-gray);font-weight:300}
+.vbar{width:1.5px;height:20px;background:var(--light-gray);margin:8px auto}
+.lbl{font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:500}
+.ic{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:8px;flex:none}
+.ic.orange{background:var(--orange-soft);border:1px solid var(--orange-mid)}
+.ic.blue{background:var(--blue-soft);border:1px solid var(--blue-mid)}
+.ic.green{background:var(--green-soft);border:1px solid var(--green-mid)}
+.ic.dark{background:var(--dark)} .ic.gray{background:var(--light);border:1px solid var(--border)}
+.num{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;background:var(--dark);color:var(--light);font-family:'IBM Plex Mono',monospace;font-size:14px;font-weight:500;flex:none}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+.grid4{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.mono{font-family:'IBM Plex Mono',monospace}
+.muted{color:var(--dark-muted)} .faint{color:var(--dark-faint);font-size:12px}
+.center{text-align:center} .w300{font-weight:300}
+.ring{position:relative;width:300px;height:300px;margin:8px auto}
+.ring .center-dot{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:96px;height:96px;border-radius:50%;background:var(--dark);color:var(--light);display:flex;align-items:center;justify-content:center;text-align:center;font-size:12px;font-weight:600;line-height:1.3;padding:8px}
+.ring .seg{position:absolute;width:118px;text-align:center}
+@media (max-width:600px){
+  h1{font-size:26px} .subtitle{font-size:16px}
+  h2{font-size:21px} .card{padding:26px 18px 20px} .card-title{font-size:18px}
+  .grid3{grid-template-columns:1fr} .grid2{grid-template-columns:1fr} .ring{width:260px;height:260px}
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+<h1>Your AI Demo Works. Now Prove It Won't Embarrass You in Production</h1>
+<div class="subtitle">A field guide to Mistral AI Studio: the loop that turns production traffic into a model that gets better instead of quietly worse.</div>
+<div class="byline">Han HELOIR YAN, Ph.D. ☕️</div>
+
+<hr class="rule">
+
+<p class="lead">A prompt tweak ships on a Tuesday. It looks fine in the playground. Three weeks later your support assistant has been telling customers to "check the manual" in a tone somewhere between bored and hostile, and nobody noticed because nobody was watching.</p>
+<p>The first real signal is an apology email your head of support has to write to a key account. The model was capable the whole time. What you lacked was a way to see, score, and fix its behavior in production.</p>
+<p>That gap is the entire reason Mistral AI Studio exists. Not "another place to call a model." A system for running one.</p>
+
+<!-- 01 -->
+<div class="diagram-container"><div class="card">
+  <div class="card-number">01 / 27</div>
+  <div class="card-title">The gap nobody schedules for</div>
+  <div class="card-sub">Experiment velocity races ahead. Production maturity lags. The space between is where silent drift lives.</div>
+  <div class="card-body">
+    <div class="row" style="align-items:stretch">
+      <div class="node blue grow"><div class="nt">Experiment velocity</div><div class="nd">Prompts ship daily. Models change weekly. Demos look great.</div></div>
+      <div class="node red grow"><div class="nt">Production maturity</div><div class="nd">No tracing. No scoring. No rollback. No record of why output changed.</div></div>
+    </div>
+    <div class="center" style="margin-top:16px">
+      <span class="tag gray">THE GAP</span>
+      <div class="w300 muted" style="font-size:13px;margin-top:8px">A prompt tweak ships Tuesday. The tone goes cold. You find out three weeks later, from an apology email.</div>
+    </div>
+  </div>
+  <div class="callout callout-orange">Most AI adoption stalls here, not on model quality.</div>
+  <div class="attribution">Created by Han HELOIR YAN</div>
+</div></div>
+
+<div class="cta">
+  <p><strong>Before we start!🦸🏻‍♀️</strong> If this helps you ship better AI systems: 👏 Clap 50 times (yes, you can!) — Medium's algorithm favors this, increasing visibility to others who then discover the article. 🔔 Follow me on Medium, LinkedIn and subscribe to get my latest article.</p>
+  <div class="links">Links: <a href="https://medium.com/@han.heloir">Medium</a> · <a href="https://www.linkedin.com/in/hanheloiryan/">LinkedIn</a> · <a href="https://medium.com/@han.heloir/about">Subscribe</a></div>
+</div>
+
+<h2>The one idea: a flywheel, not a dashboard</h2>
+<p class="lead">Most "observability" products stop at a dashboard. You get charts, you nod, nothing changes. AI Studio is built around a different shape: a loop where production usage becomes the fuel for the next improvement.</p>
+<p>Here is the loop. You observe real traffic. You define what good looks like with an evaluator. You run that evaluator across thousands of past conversations. You collect the labeled results into a curated dataset. You use that dataset to measure and improve. Then the improved system ships, generates new traffic, and the loop turns again.</p>
+
+<!-- 02 -->
+<div class="diagram-container"><div class="card">
+  <div class="card-number">02 / 27</div>
+  <div class="card-title">A flywheel, not a dashboard</div>
+  <div class="card-sub">Production usage becomes the fuel for the next improvement. The loop turns on itself.</div>
+  <div class="card-body">
+    <div class="ring">
+      <div class="center-dot">Closed<br>loop</div>
+      <div class="seg" style="top:0;left:50%;transform:translateX(-50%)"><span class="tag blue">OBSERVE</span><div class="faint w300" style="margin-top:4px">read real traffic</div></div>
+      <div class="seg" style="top:34%;right:-10px"><span class="tag orange">EVALUATE</span><div class="faint w300" style="margin-top:4px">define good</div></div>
+      <div class="seg" style="bottom:0;right:8%"><span class="tag orange">ANNOTATE</span><div class="faint w300" style="margin-top:4px">score at scale</div></div>
+      <div class="seg" style="bottom:0;left:8%"><span class="tag green">CURATE</span><div class="faint w300" style="margin-top:4px">build datasets</div></div>
+      <div class="seg" style="top:34%;left:-10px"><span class="tag green">IMPROVE</span><div class="faint w300" style="margin-top:4px">ship + measure</div></div>
+    </div>
+  </div>
+  <div class="callout callout-green">Every turn of the loop makes the next version measurably better.</div>
+  <div class="attribution">Created by Han HELOIR YAN</div>
+</div></div>
+
+<p>Mistral organizes this into three pillars. <strong>Observability</strong> is how you see and score behavior. <strong>Agent Runtime</strong> is how you execute work durably and reproducibly. <strong>AI Registry</strong> is the system of record that versions every asset and controls what reaches production. The pillars are not three separate tools bolted together. They are three faces of one loop.</p>
+
+<!-- 03 -->
+<div class="diagram-container"><div class="card">
+  <div class="card-number">03 / 27</div>
+  <div class="card-title">Three pillars, one loop</div>
+  <div class="card-sub">Not three tools bolted together. Three faces of the same operational loop.</div>
+  <div class="card-body">
+    <div class="grid3">
+      <div class="node blue"><div class="row" style="gap:10px"><span class="ic blue"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6a9bcc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></span><div class="nt">Observability</div></div><div class="nd">See and score behavior. Explorer, Judges, Campaigns, Datasets.</div></div>
+      <div class="node orange"><div class="row" style="gap:10px"><span class="ic orange"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#d97757" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9z"/></svg></span><div class="nt">Agent Runtime</div></div><div class="nd">Execute work durably and reproducibly. Agents and workflows.</div></div>
+      <div class="node green"><div class="row" style="gap:10px"><span class="ic green"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#788c5d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 2 7l10 5 10-5-10-5z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></svg></span><div class="nt">AI Registry</div></div><div class="nd">Version every asset. Control what reaches production.</div></div>
+    </div>
+  </div>
+  <div class="callout callout-neutral">Observe → Evaluate → Improve runs across all three.</div>
+  <div class="attribution">Created by Han HELOIR YAN</div>
+</div></div>
+
+<figure class="shot">
+  <img src="https://cozypet.github.io/mistral-ai-studio/images/ui-01-studio-home.jpg" alt="Mistral Studio console home, showing Build, Capture and Observe cards and the left navigation">
+  <figcaption><span class="cap-h">The Studio console.</span> The left rail is the flywheel as a menu: Create (Playground, Agents, Batches, Document AI, Workflows, Audio), Improve (Observe, Evaluate, Fine tune), and Context (Prompts, Skills, Files). The three home cards, Build, Capture, and Observe, say the same thing in plain language. The Observability features live under Improve and carry a Preview badge. Image from the Mistral Studio console.</figcaption>
+</figure>
+
+<p>Keep the loop in your head as you read. Every feature below earns its place by the part of the loop it powers. One honest caveat up front: the full Observability suite is currently an Enterprise tier capability, so some of what follows assumes that access.</p>
+
+<h2>Seeing production clearly</h2>
+<p class="lead">Back to the silent drift. The on call engineer cannot fix what she cannot find, and right now her only evidence is one angry email. Observability is the pillar that turns "something feels off" into a list of exact conversations she can read, score, and act on.</p>
+<p>But none of it works until the data is flowing. So we start there.</p>
+
+<h3>How the data gets in (instrumentation)</h3>
+<p><strong>The story.</strong> Your assistant has been live for months. You open Explorer hoping to read those bad conversations and the screen is empty, because nothing was ever instrumented. This is the most common day one mistake: people expect the platform to magically know about traffic it was never told about.</p>
+<p><strong>Why and when.</strong> You instrument once, at the start, so every call your application makes leaves a trace. The Mistral SDK ships an OpenTelemetry native tracing layer, which matters for two reasons: spans follow the GenAI semantic conventions other tools understand, and you are not locked into a proprietary wire format.</p>
+
+<pre><code><span class="tok-k">from</span> mistralai <span class="tok-k">import</span> Mistral
+<span class="tok-k">from</span> mistralai.extra.observability <span class="tok-k">import</span> configure_telemetry
+
+client = Mistral(api_key=<span class="tok-s">"..."</span>)
+
+<span class="tok-c"># "dedicated": SDK owns an exporter that ships spans to Mistral.</span>
+<span class="tok-c"># "global": reuse your existing OpenTelemetry provider.</span>
+<span class="tok-c"># Or pass your own TracerProvider to fan out to Mistral and your stack.</span>
+configure_telemetry(client, provider=<span class="tok-s">"dedicated"</span>)
+
+resp = client.chat.complete(
+    model=<span class="tok-s">"mistral-large-latest"</span>,
+    messages=[{<span class="tok-s">"role"</span>: <span class="tok-s">"user"</span>, <span class="tok-s">"content"</span>: <span class="tok-s">"How do I reset my password?"</span>}],
+    <span class="tok-c"># custom metadata becomes filterable fields in Explorer later</span>
+    <span class="tok-c"># (attach use_case, tenant, route, version, and so on)</span>
+)</code></pre>
+
+<p>The metadata you attach here is not decoration. It becomes the fields you filter on when you are hunting a regression at 2am. Tag traffic with the use case, the tenant, the route, the prompt version. Future you will be grateful.</p>
+
+<!-- 04 -->
+<div class="diagram-container"><div class="card">
+  <div class="card-number">04 / 27</div>
+  <div class="card-title">How the data gets in</div>
+  <div class="card-sub">Explorer is empty until you instrument. One call wires OpenTelemetry tracing into every request.</div>
+  <div class="card-body">
+    <div class="row center">
+      <div class="node orange" style="min-width:130px"><div class="nt">Your app</div><div class="nd">chat.complete()</div></div>
+      <div class="arrow"><svg viewBox="0 0 26 18"><path d="M2 9h18m0 0-5-5m5 5-5 5" stroke="#b0aea5" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="node blue" style="min-width:150px"><div class="nt">OTEL spans</div><div class="nd">GenAI conventions + your metadata</div></div>
+      <div class="arrow"><svg viewBox="0 0 26 18"><path d="M2 9h18m0 0-5-5m5 5-5 5" stroke="#b0aea5" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="node dark" style="min-width:120px"><div class="nt">Explorer</div><div class="nd">searchable events</div></div>
+    </div>
+    <div class="center" style="margin-top:18px"><span class="tag blue">configure_telemetry(client, "dedicated")</span></div>
+  </div>
+  <div class="callout callout-blue">Tag use_case, tenant, route, version now. Those become your filters later.</div>
+  <div class="attribution">Created by Han HELOIR YAN</div>
+</div></div>
+
+<h3>Explorer: read what actually shipped</h3>
+<p><strong>The story.</strong> With traffic flowing, the engineer opens Explorer and filters to the support route, the last three weeks, only assistant turns longer than a sentence. There they are: forty conversations where the tone went cold right after the prompt change. She has gone from one apology email to the full population of the problem in two minutes.</p>
+<p><strong>Why and when.</strong> Reach for Explorer whenever you need to understand what is really happening in production, investigate a specific quality issue, or pull representative examples for later analysis. Filters compose as a tree, so "support route AND last 3 weeks AND (rude OR off topic)" is a structure, not a guess.</p>
+
+<pre><code><span class="tok-k">from</span> mistralai <span class="tok-k">import</span> models
+
+events = client.beta.observability.chat_completion_events.search(
+    search_params=models.FilterPayload(
+        filters=models.FilterGroup(
+            and_=[
+                models.FilterCondition(field=<span class="tok-s">"extra_fields.use_case"</span>,
+                                       op=<span class="tok-s">"eq"</span>, value=<span class="tok-s">"customer_support"</span>),
+                models.FilterCondition(field=<span class="tok-s">"created_at"</span>,
+                                       op=<span class="tok-s">"gte"</span>, value=<span class="tok-s">"2026-05-15T00:00:00Z"</span>),
+            ]
+        )
+    ),
+    page_size=50,
+)</code></pre>
+
+<p>The operator vocabulary is broad: <code class="inl">eq</code>, <code class="inl">neq</code>, <code class="inl">gt</code>, <code class="inl">gte</code>, <code class="inl">lt</code>, <code class="inl">lte</code>, <code class="inl">contains</code>, <code class="inl">icontains</code>, <code class="inl">notcontains</code>, <code class="inl">startswith</code>, <code class="inl">endswith</code>, <code class="inl">matches</code>, <code class="inl">isnull</code>, <code class="inl">includes</code>, <code class="inl">excludes</code>, <code class="inl">len_eq</code>. Compose them with nested <code class="inl">and_</code> and <code class="inl">or_</code> groups to slice traffic precisely.</p>
+
+<!-- 05 -->
+<div class="diagram-container"><div class="card">
+  <div class="card-number">05 / 27</div>
+  <div class="card-title">Explorer filter tree anatomy</div>
+  <div class="card-sub">Filters compose as a tree, so a precise slice is a structure, not a guess.</div>
+  <div class="card-body">
+    <div class="center"><div class="node blue" style="display:inline-block">FilterGroup · <span class="mono">and_</span></div></div>
+    <div class="vbar"></div>
+    <div class="grid3">
+      <div class="node"><div class="mono" style="font-size:13px;color:var(--dark-soft)">use_case <span style="color:var(--orange)">eq</span> "support"</div></div>
+      <div class="node"><div class="mono" style="font-size:13px;color:var(--dark-soft)">created_at <span style="color:var(--orange)">gte</span> 2026-05-15</div></div>
+      <div class="node blue"><div class="mono" style="font-size:13px">FilterGroup · or_</div><div class="nd">tone eq RUDE · tone eq CURT</div></div>
+    </div>
+    <div class="center" style="margin-top:16px"><span class="faint mono">ops: eq neq gt gte lt lte contains icontains startswith endswith matches isnull includes excludes len_eq</span></div>
+  </div>
+  <div class="attribution">Created by Han HELOIR YAN</div>
+</div></div>
+
+<figure class="shot">
+  <img src="https://cozypet.github.io/mistral-ai-studio/images/ui-02-explorer.jpg" alt="Explorer view listing chat completion events with a filter bar, time window and column picker">
+  <figcaption><span class="cap-h">Observe &gt; Explorer.</span> The filter bar takes the same expressions you write against the API (here <span style="color:var(--orange)">model_name = "mistral-large"</span>), next to a time window and a column picker. Each row is one chat completion event with its date, model, and prompt; open a row to read the full exchange, or send it straight to a Judge. Image from the Mistral Studio console.</figcaption>
+</figure>
+
+<p>There is a sharper move. Once she finds one bad conversation, she does not want to hand write a filter that catches every sibling. She asks Explorer for semantically similar events and the platform returns the cluster.</p>
+
+<pre><code><span class="tok-c"># Found one bad answer. Now pull everything that looks like it.</span>
+similar = client.beta.observability.chat_completion_events.fetch_similar_events(
+    event_id=<span class="tok-s">"evt_abc123"</span>,
+)</code></pre>
+
+<!-- 06 -->
+<div class="diagram-container"><div class="card">
+  <div class="card-number">06 / 27</div>
+  <div class="card-title">One failure becomes a cluster</div>
+  <div class="card-sub">fetch_similar_events pulls every sibling of a bad answer without you writing a clever filter.</div>
+  <div class="card-body">
+    <div class="row center">
+      <div class="node red" style="min-width:150px"><div class="nt">1 bad event</div><div class="nd">evt_abc123</div></div>
+      <div class="arrow"><svg viewBox="0 0 26 18"><path d="M2 9h18m0 0-5-5m5 5-5 5" stroke="#b0aea5" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="pill" style="background:var(--orange-soft);border-color:var(--orange-mid);color:var(--orange)">fetch_similar_events</div>
+      <div class="arrow"><svg viewBox="0 0 26 18"><path d="M2 9h18m0 0-5-5m5 5-5 5" stroke="#b0aea5" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="col" style="gap:8px">
+        <div class="node amber" style="padding:8px 12px"><div class="mono" style="font-size:12px">evt_…41 · similar</div></div>
+        <div class="node amber" style="padding:8px 12px"><div class="mono" style="font-size:12px">evt_…77 · similar</div></div>
+        <div class="node amber" style="padding:8px 12px"><div class="mono" style="font-size:12px">evt_…92 · similar</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="callout callout-orange">Semantic search over your own production traffic.</div>
+  <div class="attribution">Created by Han HELOIR YAN</div>
+</div></div>
+
+<h3>Judges: turn "this feels rude" into a number</h3>
+<p><strong>The story.</strong> Forty conversations is readable. Forty thousand is not. The team needs to score tone automatically, the same way every time, so the judgment does not depend on who is reading or how tired they are. They write the rubric once as a Judge.</p>
+<p><strong>Why and when.</strong> Use a Judge when you have a quality question you will ask repeatedly: tone, factuality against a known answer, policy compliance, helpfulness. A Judge is an evaluator made of three parts: a model, instructions, and an output schema. Two output shapes exist. <strong>Classification</strong> returns a named label. <strong>Regression</strong> returns a number on a scale.</p>
+
+<pre><code><span class="tok-k">from</span> mistralai <span class="tok-k">import</span> models
+
+<span class="tok-c"># Classification: assign a discrete label</span>
+tone_judge = client.beta.observability.judges.create(
+    name=<span class="tok-s">"Support Tone"</span>,
+    description=<span class="tok-s">"Is the assistant's tone acceptable for support?"</span>,
+    model_name=<span class="tok-s">"mistral-large-latest"</span>,
+    instructions=(
+        <span class="tok-s">"Read the assistant's reply. Classify its tone. "</span>
+        <span class="tok-s">"PROFESSIONAL: warm and appropriate. "</span>
+        <span class="tok-s">"CURT: technically correct but cold. "</span>
+        <span class="tok-s">"RUDE: dismissive or hostile."</span>
+    ),
+    tools=[],
+    output=models.JudgeClassificationOutput(
+        type=<span class="tok-s">"CLASSIFICATION"</span>,
+        options=[
+            models.JudgeClassificationOutputOption(value=<span class="tok-s">"PROFESSIONAL"</span>, description=<span class="tok-s">"Warm, appropriate"</span>),
+            models.JudgeClassificationOutputOption(value=<span class="tok-s">"CURT"</span>, description=<span class="tok-s">"Cold but correct"</span>),
+            models.JudgeClassificationOutputOption(value=<span class="tok-s">"RUDE"</span>, description=<span class="tok-s">"Dismissive or hostile"</span>),
+        ],
+    ),
+)</code></pre>
+
+<!-- 07 -->
+<div class="diagram-container"><div class="card">
+  <div class="card-number">07 / 27</div>
+  <div class="card-title">Two ways a Judge answers</div>
+  <div class="card-sub">Classification returns a label. Regression returns a score. Pick by the question you are asking.</div>
+  <div class="card-body">
+    <div class="grid2">
+      <div class="node blue"><div class="nt">CLASSIFICATION</div><div class="nd">Discrete label</div>
+        <div class="row" style="margin-top:10px;gap:8px"><span class="tag green">PROFESSIONAL</span><span class="tag amber">CURT</span><span class="tag red">RUDE</span></div>
+        <div class="faint w300" style="margin-top:8px">Use for: tone, category, pass/fail policy checks.</div>
+      </div>
+      <div class="node orange"><div class="nt">REGRESSION</div><div class="nd">Continuous score</div>
+        <div style="margin-top:12px;height:8px;border-radius:100px;background:linear-gradient(90deg,var(--red-soft),var(--green-soft));border:1px solid var(--border)"></div>
+        <div class="row" style="justify-content:space-between;margin-top:6px"><span class="faint mono">0.0 not helpful</span><span class="faint mono">1.0 perfect</span></div>
+        <div class="faint w300" style="margin-top:8px">Use for: helpfulness, faithfulness, graded quality.</div>
+      </div>
+    </div>
+  </div>
+  <div class="attribution">Created by Han HELOIR YAN</div>
+</div></div>
+
+<p>The trap with evaluators is spending real money running a flawed rubric across your whole history. So before scaling, test the Judge on a single record. The platform even gives Judges their own Playground for exactly this.</p>
+
+<pre><code><span class="tok-c"># Validate the rubric on ONE event before you spend anything</span>
+result = client.beta.observability.chat_completion_events.judge(
+    event_id=<span class="tok-s">"evt_abc123"</span>,
+    judge_id=tone_judge.id,
+)</code></pre>
+
+<!-- 08 -->
+<div class="diagram-container"><div class="card">
+  <div class="card-number">08 / 27</div>
+  <div class="card-title">A Judge, and the dry run that saves money</div>
+  <div class="card-sub">Three parts define it. One record proves it before you spend at scale.</div>
+  <div class="card-body">
+    <div class="grid3">
+      <div class="node"><span class="ic gray"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5c5b55" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 3v4M8 3v4"/></svg></span><div class="nt" style="margin-top:8px">Model</div><div class="nd">mistral-large-latest</div></div>
+      <div class="node"><span class="ic gray"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5c5b55" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v12H7l-3 3z"/></svg></span><div class="nt" style="margin-top:8px">Instructions</div><div class="nd">the rubric, in words</div></div>
+      <div class="node"><span class="ic gray"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5c5b55" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M4 12h10M4 17h7"/></svg></span><div class="nt" style="margin-top:8px">Output schema</div><div class="nd">label or score</div></div>
+    </div>
+    <div class="vbar"></div>
+    <div class="center"><div class="node green" style="display:inline-block"><span class="mono" style="font-size:13px;color:var(--green)">chat_completion_events.judge(event_id, judge_id)</span><div class="nd">run on ONE event first</div></div></div>
+  </div>
+  <div class="callout callout-green">Validate before you scale. A flawed rubric times 5,000 events is a bill.</div>
+  <div class="attribution">Created by Han HELOIR YAN</div>
+</div></div>
+
+<figure class="shot">
+  <img src="https://cozypet.github.io/mistral-ai-studio/images/ui-03-create-judge.jpg" alt="Create a new judge form with model, instructions, tools, type and output options, plus an LLM Judges explainer panel">
+  <figcaption><span class="cap-h">Evaluate &gt; Judges &gt; Create.</span> Pick the judge model, write the rubric in Instructions, optionally grant Tools, choose the Type (CLASSIFICATION here, REGRESSION for a score), and list the Output options that become your labels. The right panel says where a judge plugs in: Evaluations and Campaigns. Try it runs the single record dry run before you commit with Create judge. Image from the Mistral Studio console.</figcaption>
+</figure>
+
+<h3>Campaigns: grade three months of traffic overnight</h3>
+<p><strong>The story.</strong> The rubric works on one record. Now the team points it at a quarter of support traffic and goes home. By morning, every conversation in that window carries a tone label, and the size of the problem is no longer a feeling, it is a percentage.</p>
+<p><strong>Why and when.</strong> Reach for a Campaign when you need a Judge applied in bulk to a filtered slice of history: auditing behavior, tagging traffic by category, or building a quality labeled dataset. A Campaign uses exactly one Judge. It runs asynchronously, capped between 100 and 10,000 events, so you launch it and walk away.</p>
+
+<pre><code>campaign = client.beta.observability.campaigns.create(
+    name=<span class="tok-s">"Q2 Support Tone Audit"</span>,
+    description=<span class="tok-s">"Tone classification across Q2 support traffic"</span>,
+    judge_id=tone_judge.id,
+    max_nb_events=5000,
+    search_params=models.FilterPayload(
+        filters=models.FilterGroup(and_=[
+            models.FilterCondition(field=<span class="tok-s">"extra_fields.use_case"</span>, op=<span class="tok-s">"eq"</span>, value=<span class="tok-s">"customer_support"</span>),
+            models.FilterCondition(field=<span class="tok-s">"created_at"</span>, op=<span class="tok-s">"gte"</span>, value=<span class="tok-s">"2026-04-01T00:00:00Z"</span>),
+            models.FilterCondition(field=<span class="tok-s">"created_at"</span>, op=<span class="tok-s">"lt"</span>,  value=<span class="tok-s">"2026-07-01T00:00:00Z"</span>),
+        ])
+    ),
+)
+
+<span class="tok-k">import</span> time
+<span class="tok-k">while</span> True:
+    status = client.beta.observability.campaigns.fetch_status(campaign_id=campaign.id)
+    <span class="tok-k">if</span> status.status <span class="tok-k">in</span> (<span class="tok-s">"COMPLETED"</span>, <span class="tok-s">"FAILED"</span>):
+        <span class="tok-k">break</span>
+    time.sleep(10)
+
+annotated = client.beta.observability.campaigns.list_events(campaign_id=campaign.id)</code></pre>
+
+<p>This is the step that kills the manual labeling bottleneck. Weeks of human annotation collapse into an overnight job.</p>
+
+<!-- 09 -->
+<div class="diagram-container"><div class="card">
+  <div class="card-number">09 / 27</div>
+  <div class="card-title">Campaign lifecycle</div>
+  <div class="card-sub">Point a Judge at a filtered slice of history. It runs async while you sleep.</div>
+  <div class="card-body">
+    <div class="row center">
+      <div class="node blue"><div class="nt">Filter</div><div class="nd">Q2 support traffic</div></div>
+      <span class="chev">›</span>
+      <div class="node orange"><div class="nt">Judge</div><div class="nd">one per campaign</div></div>
+      <span class="chev">›</span>
+      <div class="node amber"><div class="nt">Running</div><div class="nd">async · poll status</div></div>
+      <span class="chev">›</span>
+      <div class="node green"><div class="nt">Annotated</div><div class="nd">every event labeled</div></div>
+    </div>
+    <div class="row center" style="margin-top:16px">
+      <span class="tag gray">CAP 100 – 10,000 EVENTS</span>
+      <span class="tag blue">fetch_status</span>
+      <span class="tag green">list_events</span>
+    </div>
+  </div>
+  <div class="callout callout-orange">Weeks of manual labeling collapse into one overnight job.</div>
+  <div class="attribution">Created by Han HELOIR YAN</div>
+</div></div>
+
+<h3>Datasets: production traffic becomes a regression baseline</h3>
+<p><strong>The story.</strong> The team now has 5,000 labeled conversations. The RUDE and CURT ones are gold: they are exactly the cases the next prompt must handle. They pull those into a named Dataset, fix a few messages by hand, write the ideal reply for each, and freeze it. From now on, every candidate change is tested against this set before it ships. The silent drift can never happen invisibly again, because this Dataset is the tripwire.</p>
+<p><strong>Why and when.</strong> Use a Dataset when you want a curated, editable, versioned collection of conversations to evaluate against or to keep as a regression baseline. Unlike raw Explorer traffic, Dataset records are editable. Each record carries structured properties: <code class="inl">expected_output</code> (the ideal reply a Judge can compare against), <code class="inl">category</code>, and <code class="inl">grading_guidance</code>.</p>
+
+<pre><code>dataset = client.beta.observability.datasets.create(
+    name=<span class="tok-s">"support_tone_regression_2026_q2"</span>,
+    description=<span class="tok-s">"Frozen baseline of hard tone cases"</span>,
+)
+
+<span class="tok-c"># The flywheel made literal: import straight from the campaign you just ran</span>
+client.beta.observability.datasets.import_from_campaign(
+    dataset_id=dataset.id, campaign_id=campaign.id,
+)
+
+<span class="tok-c"># Or pull a filtered slice directly from Explorer</span>
+client.beta.observability.datasets.import_from_explorer(
+    dataset_id=dataset.id,
+    search_params=models.FilterPayload(
+        filters=models.FilterCondition(field=<span class="tok-s">"extra_fields.use_case"</span>, op=<span class="tok-s">"eq"</span>, value=<span class="tok-s">"customer_support"</span>),
+    ),
+)
+
+<span class="tok-c"># Export when you want the raw JSONL for an offline eval harness</span>
+client.beta.observability.datasets.export_to_jsonl(dataset_id=dataset.id)</code></pre>
+
+<p>Notice the import methods: <code class="inl">import_from_explorer</code>, <code class="inl">import_from_campaign</code>, <code class="inl">import_from_playground</code>, <code class="inl">import_from_file</code>. The flywheel is not a metaphor here. It is a method signature.</p>
+
+<!-- 10 -->
+<div class="diagram-container"><div class="card">
+  <div class="card-number">10 / 27</div>
+  <div class="card-title">The flywheel is a method signature</div>
+  <div class="card-sub">Datasets import from every source in the loop, then export clean JSONL.</div>
+  <div class="card-body">
+    <div class="row" style="align-items:center">
+      <div class="col grow" style="gap:8px">
+        <div class="node blue" style="padding:8px 12px"><div class="mono" style="font-size:12px">import_from_explorer</div></div>
+        <div class="node orange" style="padding:8px 12px"><div class="mono" style="font-size:12px">import_from_campaign</div></div>
+        <div class="node" style="padding:8px 12px"><div class="mono" style="font-size:12px">import_from_playground</div></div>
+        <div class="node" style="padding:8px 12px"><div class="mono" style="font-size:12px">import_from_file</div></div>
+      </div>
+      <div class="arrow"><svg viewBox="0 0 26 18"><path d="M2 9h18m0 0-5-5m5 5-5 5" stroke="#b0aea5" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="node green" style="min-width:120px"><div class="nt">Dataset</div><div class="nd">curated · editable · versioned</div></div>
+      <div class="arrow"><svg viewBox="0 0 26 18"><path d="M2 9h18m0 0-5-5m5 5-5 5" stroke="#b0aea5" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="node dark" style="min-width:96px"><div class="nt">export_to_jsonl</div></div>
+    </div>
+  </div>
+  <div class="callout callout-green">Production traffic in, regression baseline out.</div>
+  <div class="attribution">Created by Han HELOIR YAN</div>
+</div></div>
+
+<!-- 11 -->
+<div class="diagram-container"><div class="card">
+  <div class="card-number">11 / 27</div>
+  <div class="card-title">What lives inside a record</div>
+  <div class="card-sub">Properties are what make a Dataset more than a pile of conversations.</div>
+  <div class="card-body">
+    <div class="grid3">
+      <div class="node blue"><div class="nt">messages</div><div class="nd">the conversation, editable</div></div>
+      <div class="node green"><div class="nt">expected_output</div><div class="nd">the ideal reply a Judge compares against</div></div>
+      <div class="node orange"><div class="nt">category + grading_guidance</div><div class="nd">how this case should be judged</div></div>
+    </div>
+  </div>
+  <div class="callout callout-neutral">Fix messages, add the gold answer, tell the Judge how to grade it.</div>
+  <div class="attribution">Created by Han HELOIR YAN</div>
+</div></div>
+
+<h3>Closing the measurement loop</h3>
+<p>Above the four building blocks, AI Studio adds Experiments, Iterations, and Dashboards so improvement is measurable rather than anecdotal, plus lineage that traces an outcome back to the prompt, the prompt back to its version, and the version back to the real traffic that produced it. That lineage is what lets you say "accuracy went up 6 points because of change X," instead of "it feels better."</p>
+
+<!-- 12 -->
+<div class="diagram-container"><div class="card">
+  <div class="card-number">12 / 27</div>
+  <div class="card-title">Lineage closes the measurement loop</div>
+  <div class="card-sub">Trace an outcome back to the version and the traffic that produced it.</div>
+  <div class="card-body">
+    <div class="row center">
+      <div class="node green"><div class="nt">Outcome</div><div class="nd">+6 pts on tone</div></div>
+      <span class="chev">‹</span>
+      <div class="node"><div class="nt">Prompt</div><div class="nd">the exact text</div></div>
+      <span class="chev">‹</span>
+      <div class="node"><div class="nt">Version</div><div class="nd">v3 vs v2</div></div>
+      <span class="chev">‹</span>
+      <div class="node blue"><div class="nt">Real usage</div><div class="nd">the events behind it</div></div>
+    </div>
+    <div class="center" style="margin-top:14px"><span class="tag gray">EXPERIMENTS · ITERATIONS · DASHBOARDS</span></div>
+  </div>
+  <div class="callout callout-green">"Accuracy rose because of change X." Not "it feels better."</div>
+  <div class="attribution">Created by Han HELOIR YAN</div>
+</div></div>
+
+<figure class="shot">
+  <img src="https://cozypet.github.io/mistral-ai-studio/images/ui-04-evaluations.jpg" alt="Evaluations view showing runs of a model against a dataset with average score and standard deviation">
+  <figcaption><span class="cap-h">Evaluate &gt; Evaluations.</span> Each evaluation groups runs of a model against a dataset. You read the average score and the standard deviation (the sigma column) per run, with owner and model alongside, so comparing Run #1 against Run #2, or v2 against v3, is a number rather than a feeling. This is the measurable improvement the lineage above promises. Image from the Mistral Studio console.</figcaption>
+</figure>
+
+<h2>Agent Runtime</h2>
+<p class="lead">Observability tells you what happened. The Agent Runtime is where work actually happens, and it is the part most teams underestimate until it burns them.</p>
+<p><strong>The story that motivates everything here.</strong> Your support assistant grows up. It no longer just answers questions, it processes a refund: look up the order, check the policy, call the payments API, email the customer, log the case. You wired that as a Python script with five API calls in a row. It works in the demo. In production, the payments call times out on call number four. Now you have charged nothing but emailed the customer a confirmation, or refunded twice on a retry, and you have no record of which step failed or why. A sequence of API calls is not a system. It has no memory, no recovery, and no audit trail.</p>
+
+<!-- 13 -->
+<div class="diagram-container"><div class="card">
+  <div class="card-number">13 / 27</div>
+  <div class="card-title">A script is not a system</div>
+  <div class="card-sub">Five API calls in a row look fine in the demo and lose your money in production.</div>
+  <div class="card-body">
+    <div class="grid2">
+      <div class="node red"><div class="nt">Fragile script</div>
+        <div class="stack" style="margin-top:10px">
+          <span class="tag green">lookup order ✓</span><span class="tag green">check policy ✓</span><span class="tag green">refund ✓</span>
+          <span class="tag red">payments TIMEOUT ✗</span>
+          <span class="faint w300">no memory · no recovery · no record</span>
+        </div>
+      </div>
+      <div class="node green"><div class="nt">Durable runtime</div>
+        <div class="stack" style="margin-top:10px">
+          <span class="tag green">lookup order ✓</span><span class="tag green">check policy ✓</span><span class="tag green">refund ✓</span>
+          <span class="tag amber">payments retry → ✓</span>
+          <span class="faint w300">resumes · never double runs · audited</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="attribution">Created by Han HELOIR YAN</div>
+</div></div>
+
+<p>The Agent Runtime is the answer to that failure. It is the execution backbone that runs every agent, from a single answer to a long business process, with durability, transparency, and reproducibility. Under the hood it leans on a durable execution engine (Temporal), but you never have to think about that. What you get is the behavior.</p>
+
+<h3>Durability and reproducibility</h3>
+<p><strong>Why it matters.</strong> When step four fails, a durable runtime does not lose the first three steps. It resumes from where it broke, retries with consistent behavior, and never double executes a step it already completed. The refund either fully happens or cleanly does not. That is the difference between a script and a system.</p>
+
+<!-- 14 -->
+<div class="diagram-container"><div class="card">
+  <div class="card-number">14 / 27</div>
+  <div class="card-title">Surviving the failure at step four</div>
+  <div class="card-sub">A durable run resumes where it broke and never re executes a completed step.</div>
+  <div class="card-body">
+    <div class="row center">
+      <div class="num" style="background:var(--green)">1</div><span class="chev">›</span>
+      <div class="num" style="background:var(--green)">2</div><span class="chev">›</span>
+      <div class="num" style="background:var(--green)">3</div><span class="chev">›</span>
+      <div class="num" style="background:var(--amber)">4</div>
+      <div class="col" style="gap:4px;margin-left:6px"><span class="tag amber">retry</span><span class="faint mono">idempotent</span></div>
+      <span class="chev">›</span>
+      <div class="num" style="background:var(--green)">5</div>
+    </div>
+    <div class="center" style="margin-top:14px"><span class="faint w300">Steps 1 to 3 stay done. Only step 4 retries. Step 5 never fires twice.</span></div>
+  </div>
+  <div class="callout callout-green">The refund either fully happens or cleanly does not.</div>
+  <div class="attribution">Created by Han HELOIR YAN</div>
+</div></div>
+
+<h3>Stateful conversations</h3>
+<p><strong>The story.</strong> A customer starts a return on Monday and replies to your follow up on Wednesday. With a stateless script you would stitch the history together by hand every time and pray you got the ordering right. The runtime keeps conversation state for you, so Wednesday's reply continues Monday's thread with full context.</p>
+<p><strong>Why and when.</strong> Use stateful conversations for anything that spans more than one turn or more than one sitting: support threads, multi step intake, anything with memory.</p>
+
+<pre><code><span class="tok-c"># Start a durable, stateful conversation</span>
+conv = client.beta.conversations.start(
+    agent_id=<span class="tok-s">"agent_support_v3"</span>,
+    inputs=<span class="tok-s">"I want to return order #4417."</span>,
+)
+
+<span class="tok-c"># Two days later, the customer replies. Append to the SAME conversation.</span>
+conv = client.beta.conversations.append(
+    conversation_id=conv.conversation_id,
+    inputs=<span class="tok-s">"Actually, can I exchange it instead?"</span>,
+)
+
+history = client.beta.conversations.get_history(conversation_id=conv.conversation_id)</code></pre>
+
+<!-- 15 -->
+<div class="diagram-container"><div class="card">
+  <div class="card-number">15 / 27</div>
+  <div class="card-title">A conversation that remembers</div>
+  <div class="card-sub">State persists across turns and across days. Append to the same thread, do not rebuild it.</div>
+  <div class="card-body">
+    <div class="row center">
+      <div class="node blue"><div class="nt">Mon</div><div class="nd">conversations.start()</div></div>
+      <div class="arrow"><svg viewBox="0 0 26 18"><path d="M2 9h18m0 0-5-5m5 5-5 5" stroke="#b0aea5" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="node dark"><div class="nt">state held</div><div class="nd">conversation_id</div></div>
+      <div class="arrow"><svg viewBox="0 0 26 18"><path d="M2 9h18m0 0-5-5m5 5-5 5" stroke="#b0aea5" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="node green"><div class="nt">Wed</div><div class="nd">conversations.append()</div></div>
+    </div>
+  </div>
+  <div class="callout callout-blue">Wednesday's reply continues Monday's thread with full context.</div>
+  <div class="attribution">Created by Han HELOIR YAN</div>
+</div></div>
+
+<h3>Auditable execution graphs and large payloads</h3>
+<p><strong>Why it matters.</strong> Every run produces a static graph of the path it took, which step called which tool, what came back. When the refund goes wrong, you do not guess. You open the graph and see exactly where it stopped. The runtime also offloads large documents to object storage instead of dragging them through every step, so a 200 page contract in the flow does not blow up your payloads.</p>
+
+<!-- 16 -->
+<div class="diagram-container"><div class="card">
+  <div class="card-number">16 / 27</div>
+  <div class="card-title">Every run draws its own map</div>
+  <div class="card-sub">A static execution graph shows which step called which tool and what came back.</div>
+  <div class="card-body">
+    <div class="col" style="gap:0">
+      <div class="row center"><div class="node dark" style="min-width:130px"><div class="nt">refund_flow</div></div></div>
+      <div class="vbar"></div>
+      <div class="row center">
+        <div class="node green"><div class="nt">lookup</div><div class="nd">orders API</div></div>
+        <div class="node green"><div class="nt">policy</div><div class="nd">rules lib</div></div>
+        <div class="node green"><div class="nt">refund</div><div class="nd">payments API</div></div>
+        <div class="node blue"><div class="nt">notify</div><div class="nd">email tool</div></div>
+      </div>
+      <div class="center" style="margin-top:12px"><span class="faint w300">Large docs offload to object storage instead of riding through every step.</span></div>
+    </div>
+  </div>
+  <div class="callout callout-neutral">When it breaks, open the graph. Do not guess.</div>
+  <div class="attribution">Created by Han HELOIR YAN</div>
+</div></div>
+
+<h3>The loop closes here</h3>
+<p><strong>Why it matters.</strong> This is the quiet genius of the design. Every execution in the runtime emits telemetry and evaluation data straight back into Observability. The work your agents do becomes the traffic your Judges score becomes the Datasets that improve the next version. Runtime feeds Observability feeds improvement feeds Runtime. The flywheel turns without you carrying buckets between pillars.</p>
+
+<!-- 17 -->
+<div class="diagram-container"><div class="card">
+  <div class="card-number">17 / 27</div>
+  <div class="card-title">The loop closes itself</div>
+  <div class="card-sub">Runtime executions emit telemetry straight back into Observability. No buckets carried by hand.</div>
+  <div class="card-body">
+    <div class="row center">
+      <div class="node orange" style="min-width:140px"><div class="nt">Agent Runtime</div><div class="nd">every execution</div></div>
+      <div class="arrow"><svg viewBox="0 0 26 18"><path d="M2 9h18m0 0-5-5m5 5-5 5" stroke="#d97757" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="node blue" style="min-width:140px"><div class="nt">Observability</div><div class="nd">scored by Judges</div></div>
+      <div class="arrow"><svg viewBox="0 0 26 18"><path d="M2 9h18m0 0-5-5m5 5-5 5" stroke="#6a9bcc" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="node green" style="min-width:140px"><div class="nt">Better version</div><div class="nd">ships to Runtime</div></div>
+    </div>
+    <div class="center" style="margin-top:10px"><span class="faint w300">… which feeds Runtime again.</span></div>
+  </div>
+  <div class="callout callout-green">Work becomes traffic becomes training signal becomes better work.</div>
+  <div class="attribution">Created by Han HELOIR YAN</div>
+</div></div>
+
+<h2>Workflows</h2>
+<p class="lead">If the Agent Runtime is the engine, Workflows are what you actually build and operate on top of it. This is the working core of the runtime, so it deserves real attention, not a footnote.</p>
+<p><strong>The story.</strong> Your refund process is not one agent thinking. It is a defined business flow: validate the order, check eligibility, attempt the refund, notify the customer, escalate to a human if the amount is over a threshold. You want to define that flow once, run it thousands of times, schedule it, and inspect every run when finance asks "what happened to case 9981?" That is a Workflow.</p>
+<p><strong>Why and when.</strong> Reach for a Workflow when the process has structure that should outlive any single call: many steps, branching, retries, a schedule, or a need to inspect run history later. Reach for a plain agent call when the task is a single turn with no durability needs. The dividing line is whether you would be upset if the process forgot where it was halfway through.</p>
+
+<!-- 18 -->
+<div class="diagram-container"><div class="card">
+  <div class="card-number">18 / 27</div>
+  <div class="card-title">Agent call or workflow?</div>
+  <div class="card-sub">The line: would you be upset if the process forgot where it was halfway through?</div>
+  <div class="card-body">
+    <div class="grid2">
+      <div class="node blue"><div class="nt">Single agent call</div><div class="nd">one turn, no durability needed. Ask, answer, done.</div></div>
+      <div class="node orange"><div class="nt">Workflow</div><div class="nd">many steps, branching, retries, schedules, inspectable history.</div></div>
+    </div>
+    <div class="center" style="margin-top:14px"><span class="tag gray">REFUND FLOW = WORKFLOW</span></div>
+  </div>
+  <div class="attribution">Created by Han HELOIR YAN</div>
+</div></div>
+
+<p>Execute a workflow and wait for the result, or fire it and inspect later:</p>
+
+<pre><code><span class="tok-c"># Run a registered workflow and block until it finishes</span>
+result = client.workflows.execute_workflow_and_wait(
+    name=<span class="tok-s">"refund_flow"</span>,
+    inputs={<span class="tok-s">"order_id"</span>: <span class="tok-s">"4417"</span>, <span class="tok-s">"amount"</span>: 89.90},
+)</code></pre>
+
+<p>The part finance cares about is run history. Every execution is durable and inspectable.</p>
+
+<pre><code><span class="tok-c"># List recent runs of the workflow</span>
+runs = client.workflows.runs.list_runs()
+
+<span class="tok-c"># Pull the full step by step history of one run</span>
+history = client.workflows.runs.get_run_history(run_id=<span class="tok-s">"run_9981"</span>)
+<span class="tok-c"># -> each step, its inputs, outputs, retries, and final status</span></code></pre>
+
+<!-- 19 -->
+<div class="diagram-container"><div class="card">
+  <div class="card-number">19 / 27</div>
+  <div class="card-title">Run history is what finance asks for</div>
+  <div class="card-sub">"What happened to case 9981?" Every execution is durable and step by step inspectable.</div>
+  <div class="card-body">
+    <div class="stack">
+      <div class="row"><div class="num" style="background:var(--green);width:26px;height:26px;font-size:12px">1</div><div class="node grow" style="padding:8px 12px"><span class="mono" style="font-size:12px">validate_order → ok</span></div><span class="tag green">done</span></div>
+      <div class="row"><div class="num" style="background:var(--green);width:26px;height:26px;font-size:12px">2</div><div class="node grow" style="padding:8px 12px"><span class="mono" style="font-size:12px">check_eligibility → ok</span></div><span class="tag green">done</span></div>
+      <div class="row"><div class="num" style="background:var(--amber);width:26px;height:26px;font-size:12px">3</div><div class="node grow" style="padding:8px 12px"><span class="mono" style="font-size:12px">refund → timeout, retried</span></div><span class="tag amber">recovered</span></div>
+      <div class="row"><div class="num" style="background:var(--green);width:26px;height:26px;font-size:12px">4</div><div class="node grow" style="padding:8px 12px"><span class="mono" style="font-size:12px">notify_customer → sent</span></div><span class="tag green">done</span></div>
+    </div>
+    <div class="center" style="margin-top:12px"><span class="faint mono">workflows.runs.get_run_history(run_id)</span></div>
+  </div>
+  <div class="attribution">Created by Han HELOIR YAN</div>
+</div></div>
+
+<p>And because production flows rarely run on demand only, you schedule them. Nightly reconciliation, hourly syncs, a weekly digest.</p>
+
+<pre><code><span class="tok-c"># Schedule the workflow to run every night at 02:00</span>
+client.workflows.schedules.schedule_workflow(
+    name=<span class="tok-s">"refund_reconciliation"</span>,
+    <span class="tok-c"># cron and payload config per the schedules API</span>
+)
+
+<span class="tok-c"># Pause and resume without deleting the schedule</span>
+client.workflows.schedules.pause_schedule(schedule_id=<span class="tok-s">"sched_123"</span>)
+client.workflows.schedules.resume_schedule(schedule_id=<span class="tok-s">"sched_123"</span>)</code></pre>
+
+<!-- 20 -->
+<div class="diagram-container"><div class="card">
+  <div class="card-number">20 / 27</div>
+  <div class="card-title">What you assemble a workflow from</div>
+  <div class="card-sub">Steps, tools and connectors, a schedule, and a durable run record.</div>
+  <div class="card-body">
+    <div class="grid4">
+      <div class="node"><span class="ic gray"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5c5b55" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg></span><div class="nt" style="margin-top:8px">Steps</div><div class="nd">ordered, branchable</div></div>
+      <div class="node"><span class="ic gray"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5c5b55" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4l-6 6 2 2 6-6a4 4 0 0 0 5.4-5.4l-2.3 2.3-2-2z"/></svg></span><div class="nt" style="margin-top:8px">Tools + connectors</div><div class="nd">act on real systems</div></div>
+      <div class="node"><span class="ic gray"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5c5b55" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><div class="nt" style="margin-top:8px">Schedule</div><div class="nd">cron · pause · resume</div></div>
+      <div class="node"><span class="ic gray"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5c5b55" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4v16M4 8h16M4 16h16"/></svg></span><div class="nt" style="margin-top:8px">Run record</div><div class="nd">durable, inspectable</div></div>
+    </div>
+  </div>
+  <div class="callout callout-orange">Define once. Run thousands of times. Inspect any one of them.</div>
+  <div class="attribution">Created by Han HELOIR YAN</div>
+</div></div>
+
+<p>Workflows are where durability stops being an abstract promise and becomes the thing that lets you sleep while a scheduled job retries a flaky downstream API at 3am and recovers on its own.</p>
+
+<h2>AI Registry</h2>
+<p class="lead">Definitions are boring, so here is what the Registry actually buys you, told as the moment you need it.</p>
+<p><strong>The story.</strong> You ship support agent v3 on Friday. By Saturday, your tone Dashboard is red: v3 is curt. In a world without a registry, "rolling back" means someone digging through commits, redeploying, and hoping. In AI Studio, production does not point at v3. It points at an alias named <code class="inl">production</code> that you can repoint to v2 in one call. The bad version is out of the line of fire in seconds, and every version is still on record for the postmortem.</p>
+<p><strong>Why it matters.</strong> The Registry is the system of record for every asset across the lifecycle: agents, models, datasets, judges, tools, and workflows. It tracks lineage, ownership, and versioning, and it enforces access controls, moderation policies, and promotion gates before anything reaches production. The concrete payoff lives in three SDK behaviors.</p>
+
+<!-- 21 -->
+<div class="diagram-container"><div class="card">
+  <div class="card-number">21 / 27</div>
+  <div class="card-title">The Registry is the spine</div>
+  <div class="card-sub">System of record for every asset, sitting between what you observe and what you run.</div>
+  <div class="card-body">
+    <div class="row center" style="align-items:stretch">
+      <div class="node blue grow"><div class="nt">Observability</div><div class="nd">metrics, evals</div></div>
+      <div class="node dark grow"><div class="nt">AI Registry</div><div class="nd">agents · models · datasets · judges · tools · workflows</div><div class="row" style="margin-top:8px;gap:6px"><span class="tag gray" style="border-color:var(--dark-muted);color:var(--mid-gray);background:transparent">lineage</span><span class="tag gray" style="border-color:var(--dark-muted);color:var(--mid-gray);background:transparent">versioning</span><span class="tag gray" style="border-color:var(--dark-muted);color:var(--mid-gray);background:transparent">access</span></div></div>
+      <div class="node orange grow"><div class="nt">Agent Runtime</div><div class="nd">orchestration, deploy</div></div>
+    </div>
+  </div>
+  <div class="callout callout-neutral">Every output traces to a version. Every promotion to who approved it.</div>
+  <div class="attribution">Created by Han HELOIR YAN</div>
+</div></div>
+
+<p><strong>Versioning and aliases give you instant rollback.</strong> Agents are versioned, and you point a stable alias at whichever version is live.</p>
+
+<pre><code><span class="tok-c"># v3 looked great in the playground; promote it behind the "production" alias</span>
+client.beta.agents.create_version_alias(
+    agent_id=<span class="tok-s">"agent_support"</span>, version=3, alias=<span class="tok-s">"production"</span>,
+)
+
+<span class="tok-c"># Saturday: the tone dashboard is red. Repoint to v2 in one call.</span>
+client.beta.agents.update_version(
+    agent_id=<span class="tok-s">"agent_support"</span>, version=2,
+)
+<span class="tok-c"># Production now serves v2 again. v3 is still on record for the postmortem.</span></code></pre>
+
+<!-- 22 -->
+<div class="diagram-container"><div class="card">
+  <div class="card-number">22 / 27</div>
+  <div class="card-title">Rollback is one call</div>
+  <div class="card-sub">Production points at an alias, not a version. Repoint it and the bad version is out of the line of fire.</div>
+  <div class="card-body">
+    <div class="row center">
+      <div class="node"><div class="nt">Fri</div><div class="nd">alias <span class="mono">production → v3</span></div></div>
+      <div class="arrow"><svg viewBox="0 0 26 18"><path d="M2 9h18m0 0-5-5m5 5-5 5" stroke="#b0aea5" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="node red"><div class="nt">Sat</div><div class="nd">tone dashboard red</div></div>
+      <div class="arrow"><svg viewBox="0 0 26 18"><path d="M2 9h18m0 0-5-5m5 5-5 5" stroke="#b54a3a" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="node green"><div class="nt">Sat +1 call</div><div class="nd">alias <span class="mono">production → v2</span></div></div>
+    </div>
+    <div class="center" style="margin-top:12px"><span class="faint w300">v3 stays on record for the postmortem.</span></div>
+  </div>
+  <div class="callout callout-green">Seconds, not an afternoon of digging through commits.</div>
+  <div class="attribution">Created by Han HELOIR YAN</div>
+</div></div>
+
+<p><strong>Access control decides who can touch shared assets.</strong> A shared knowledge library or a judge pack should not be editable by everyone. The Registry attaches access rules to assets.</p>
+
+<pre><code><span class="tok-c"># Grant a team read access to a shared library; keep write tight</span>
+client.beta.libraries.accesses.update(
+    library_id=<span class="tok-s">"lib_policies"</span>,
+    <span class="tok-c"># share with an org/team at the desired level per the accesses API</span>
+)</code></pre>
+
+<!-- 23 -->
+<div class="diagram-container"><div class="card">
+  <div class="card-number">23 / 27</div>
+  <div class="card-title">Shared assets need a lock</div>
+  <div class="card-sub">A knowledge library or judge pack should not be editable by everyone. Access rules attach to the asset.</div>
+  <div class="card-body">
+    <div class="row center">
+      <div class="node green"><div class="row" style="gap:10px"><span class="ic green"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#788c5d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5V6a2 2 0 0 1 2-2h12v16H6a2 2 0 0 1-2-2z"/></svg></span><div class="nt">lib_policies</div></div></div>
+      <div class="col" style="gap:8px">
+        <div class="row"><span class="tag blue">support team</span><span class="faint mono">read</span></div>
+        <div class="row"><span class="tag orange">platform team</span><span class="faint mono">write</span></div>
+        <div class="row"><span class="tag gray">everyone else</span><span class="faint mono">none</span></div>
+      </div>
+    </div>
+    <div class="center" style="margin-top:12px"><span class="faint mono">libraries.accesses.update(library_id, …)</span></div>
+  </div>
+  <div class="attribution">Created by Han HELOIR YAN</div>
+</div></div>
+
+<p><strong>Promotion gates and moderation policies stop a bad version reaching users.</strong> The Registry sits in front of deployment, so a version has to clear your gates (and your moderation policy) before it is promoted. That is the technical backbone of an AI governance story you can show an auditor: every output traces to a version, every version to the data that shaped it, every promotion to who approved it.</p>
+
+<h2>The rest of the toolbox, in context</h2>
+<p class="lead">AI Studio is more than the three pillars. Here is the rest, each with the one moment you reach for it.</p>
+<p><strong>Knowledge libraries and RAG.</strong> When the assistant must answer from your policy PDFs, not its training data, you upload documents to a library and let retrieval ground the answers. Libraries carry access control, so the policy set is governed like any other asset.</p>
+
+<pre><code>client.beta.libraries.documents.upload(
+    library_id=<span class="tok-s">"lib_policies"</span>,
+    file={<span class="tok-s">"file_name"</span>: <span class="tok-s">"returns_policy.pdf"</span>, <span class="tok-s">"content"</span>: open(<span class="tok-s">"returns_policy.pdf"</span>,<span class="tok-s">"rb"</span>)},
+)</code></pre>
+
+<p><strong>Connectors.</strong> When the agent needs live data from an external system rather than a static document, connectors wire those sources in. Reach for them when "the answer depends on a system we already run." Path: <code class="inl">client.beta.connectors</code>.</p>
+<p><strong>Document AI (OCR).</strong> When the input arrives as a scanned invoice or a photographed form, OCR turns it into structured, layout aware text before anything else can reason over it. Path: <code class="inl">client.ocr</code>.</p>
+<p><strong>Audio, including realtime transcription.</strong> When the channel is voice, you transcribe (batch or streaming) and synthesize speech. Reach for it for call center flows and voice assistants. Paths: <code class="inl">client.audio.transcriptions</code>, <code class="inl">client.audio.speech</code>, plus realtime streaming in <code class="inl">mistralai.extra.realtime</code>.</p>
+<p><strong>Batch.</strong> When you have a million rows to process offline and latency does not matter, batch inference is far cheaper than hammering the live endpoint. Reach for it for backfills and bulk enrichment. Path: <code class="inl">client.batch</code>.</p>
+<p><strong>Codestral and FIM.</strong> When the use case is code, fill in the middle completes inside an existing file rather than only continuing from the end. Path: <code class="inl">client.fim</code>.</p>
+<p><strong>Embeddings.</strong> When you need semantic search or clustering under your own retrieval layer, you generate dense vectors. Path: <code class="inl">client.embeddings</code>.</p>
+<p><strong>Classifiers and Moderation.</strong> When you need a fast policy gate on inputs or outputs, the moderation classifiers flag unsafe content before it reaches a user. This is also a Registry citizen: moderation policy is enforced at promotion. Path: <code class="inl">client.classifiers</code>.</p>
+<p><strong>Vibe CLI.</strong> When you would rather scaffold agents and skills from your terminal than click through a console, the Vibe CLI is the code first entry point to the same platform.</p>
+
+<!-- 24 -->
+<div class="diagram-container"><div class="card">
+  <div class="card-number">24 / 27</div>
+  <div class="card-title">The rest of the toolbox, by the moment you reach for it</div>
+  <div class="card-sub">Same platform, same governance. Each capability has one clear trigger.</div>
+  <div class="card-body">
+    <div class="grid2">
+      <div class="node"><div class="nt">Knowledge + RAG</div><div class="nd">answer from your PDFs, not training data · <span class="mono">beta.libraries</span></div></div>
+      <div class="node"><div class="nt">Connectors</div><div class="nd">live data from systems you run · <span class="mono">beta.connectors</span></div></div>
+      <div class="node"><div class="nt">Document AI</div><div class="nd">scanned invoice to structured text · <span class="mono">ocr</span></div></div>
+      <div class="node"><div class="nt">Audio + realtime</div><div class="nd">voice channels, streaming transcription · <span class="mono">audio</span></div></div>
+      <div class="node"><div class="nt">Batch</div><div class="nd">a million rows offline, far cheaper · <span class="mono">batch</span></div></div>
+      <div class="node"><div class="nt">Codestral / FIM</div><div class="nd">complete inside a file · <span class="mono">fim</span></div></div>
+      <div class="node"><div class="nt">Embeddings</div><div class="nd">your own semantic search · <span class="mono">embeddings</span></div></div>
+      <div class="node"><div class="nt">Moderation</div><div class="nd">fast policy gate, enforced at promotion · <span class="mono">classifiers</span></div></div>
+    </div>
+    <div class="center" style="margin-top:14px"><span class="tag gray">VIBE CLI · CODE FIRST ENTRY TO THE SAME PLATFORM</span></div>
+  </div>
+  <div class="attribution">Created by Han HELOIR YAN</div>
+</div></div>
+
+<h2>Deployment and sovereignty</h2>
+<p class="lead">For a regulated buyer, this section is the one they read first, so do not bury it.</p>
+<p>AI Studio supports hybrid, dedicated, and self hosted deployments, with full data ownership. You can run agents and workflows close to your own systems and migrate between environments without re architecting, while keeping the same durability, traceability, and control. For a European bank or a hospital, that combination of audit trail, governance, and the option to keep data on infrastructure they control is not a nice to have. It is the thing that decides whether the project is allowed to exist.</p>
+
+<!-- 25 -->
+<div class="diagram-container"><div class="card">
+  <div class="card-number">25 / 27</div>
+  <div class="card-title">Run it where the rules say you must</div>
+  <div class="card-sub">Same durability, traceability, and control across every deployment mode.</div>
+  <div class="card-body">
+    <div class="grid3">
+      <div class="node blue"><div class="nt">Hybrid</div><div class="nd">platform plus your environment</div></div>
+      <div class="node orange"><div class="nt">Dedicated</div><div class="nd">isolated capacity</div></div>
+      <div class="node green"><div class="nt">Self hosted</div><div class="nd">your infrastructure, full data ownership</div></div>
+    </div>
+  </div>
+  <div class="callout callout-green">For a regulated buyer, this is what decides whether the project is allowed to exist.</div>
+  <div class="attribution">Created by Han HELOIR YAN</div>
+</div></div>
+
+<h2>The honest part</h2>
+<p class="lead">No platform is free of trade offs, and pretending otherwise insults the reader.</p>
+<p>The full Observability suite is Enterprise tier today, so smaller teams may not have access to the exact loop described here. A Judge is a model grading another model, which means your evaluator has its own error rate; always validate a Judge against a human labeled sample before you trust its numbers at scale. Campaigns cost real inference money, so a careless 10,000 event run on an expensive model is a bill, not a free audit. The durable runtime hides a lot of complexity, which is wonderful until you hit an edge case and have to reason about retries and idempotency anyway. Parts of the SDK live under the <code class="inl">beta</code> namespace and can move between versions, so pin your dependency. And while the platform leans toward lock in by design, the OpenTelemetry native tracing is a real escape hatch: your traces speak a standard other tools can read.</p>
+
+<!-- 26 -->
+<div class="diagram-container"><div class="card">
+  <div class="card-number">26 / 27</div>
+  <div class="card-title">The honest trade offs</div>
+  <div class="card-sub">No platform is free. Know the edges before you bet on it.</div>
+  <div class="card-body">
+    <div class="stack">
+      <div class="node amber"><div class="nt">Enterprise tier</div><div class="nd">the full Observability suite is Enterprise only today</div></div>
+      <div class="node amber"><div class="nt">A Judge is a model</div><div class="nd">it has its own error rate · validate against human labels</div></div>
+      <div class="node amber"><div class="nt">Campaigns cost money</div><div class="nd">10,000 events on a big model is a bill, not a free audit</div></div>
+      <div class="node amber"><div class="nt">beta namespace churn</div><div class="nd">pin your SDK version</div></div>
+      <div class="node green"><div class="nt">OTEL escape hatch</div><div class="nd">standard traces other tools can read · real portability</div></div>
+    </div>
+  </div>
+  <div class="attribution">Created by Han HELOIR YAN</div>
+</div></div>
+
+<h2>Run the loop once on something small</h2>
+<p class="lead">Do not try to operationalize your whole AI estate this quarter. Turn the flywheel exactly once, on one flow, and feel it work.</p>
+<ol>
+  <li>Instrument one production flow with <code class="inl">configure_telemetry</code> and tag it with a use case.</li>
+  <li>Open Explorer, filter to that flow, and read ten real conversations.</li>
+  <li>Write one Judge for the single quality dimension you most worry about, and test it on one record.</li>
+  <li>Run one small Campaign, capped at a few hundred events.</li>
+  <li>Pull the worst results into one Dataset and freeze it as your regression baseline.</li>
+  <li>Put your live agent behind a <code class="inl">production</code> alias so your next rollback is one call, not an afternoon.</li>
+</ol>
+<p>That is the whole platform in miniature: see, score, curate, govern, repeat. Do it once and the gap between "the demo worked" and "it runs in production" stops being a leap of faith and becomes a loop you can turn on demand.</p>
+
+<!-- 27 -->
+<div class="diagram-container"><div class="card">
+  <div class="card-number">27 / 27</div>
+  <div class="card-title">Turn the loop once, on something small</div>
+  <div class="card-sub">Not the whole estate this quarter. One flow, end to end, until you feel it work.</div>
+  <div class="card-body">
+    <div class="stack">
+      <div class="row"><div class="num">1</div><div class="node grow" style="padding:10px 14px"><div class="nt">Instrument one flow</div><div class="nd">configure_telemetry, tag the use_case</div></div></div>
+      <div class="row"><div class="num">2</div><div class="node grow" style="padding:10px 14px"><div class="nt">Read ten real conversations</div><div class="nd">Explorer, filtered to that flow</div></div></div>
+      <div class="row"><div class="num">3</div><div class="node grow" style="padding:10px 14px"><div class="nt">Write one Judge</div><div class="nd">test it on a single record</div></div></div>
+      <div class="row"><div class="num">4</div><div class="node grow" style="padding:10px 14px"><div class="nt">Run one small Campaign</div><div class="nd">capped at a few hundred events</div></div></div>
+      <div class="row"><div class="num">5</div><div class="node grow" style="padding:10px 14px"><div class="nt">Freeze one Dataset</div><div class="nd">your regression baseline</div></div></div>
+      <div class="row"><div class="num">6</div><div class="node grow" style="padding:10px 14px"><div class="nt">Put the agent behind an alias</div><div class="nd">next rollback is one call</div></div></div>
+    </div>
+  </div>
+  <div class="callout callout-green">See, score, curate, govern, repeat. The whole platform in miniature.</div>
+  <div class="attribution">Created by Han HELOIR YAN</div>
+</div></div>
+
+<hr class="rule">
+
+<h2>Credits and further reading</h2>
+<ul>
+  <li><a href="https://mistral.ai/news/ai-studio/">Introducing Mistral AI Studio</a> — the launch post and the source of the three pillar framing.</li>
+  <li><a href="https://docs.mistral.ai/studio-api/observability">Observability docs</a> — Explorer, Judges, Campaigns, Datasets, and the Enterprise tier note.</li>
+  <li><a href="https://docs.mistral.ai/studio-api/observability/judges">Judges docs</a> — classification vs regression in detail.</li>
+  <li><a href="https://docs.mistral.ai/capabilities/observability/campaigns">Campaigns docs</a> — event caps and async runs.</li>
+  <li><a href="https://docs.mistral.ai/studio-api/observability/datasets">Datasets docs</a> — record properties and curation practice.</li>
+  <li>The <code class="inl">mistralai</code> Python SDK (v2.4.9) — the source of every code path above; inspect <code class="inl">beta.observability</code>, <code class="inl">workflows</code>, and <code class="inl">extra.observability</code>.</li>
+</ul>
+
+</div>
+</body>
+</html>
