@@ -37,6 +37,8 @@ li{font-size:16px;margin:8px 0;color:var(--dark-soft)}
 
 /* screenshots */
 .shot{margin:30px 0}
+.shot.diagram{margin:30px 0}
+.shot.diagram img{box-shadow:var(--shadow-sm)}
 .shot img{width:100%;border:1px solid var(--border);border-radius:10px;box-shadow:var(--shadow-md);display:block}
 .shot figcaption{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--mid-gray);margin-top:10px;line-height:1.55}
 .shot figcaption .cap-h{color:var(--dark-soft);font-weight:500}
@@ -128,24 +130,9 @@ pre code{font-family:'IBM Plex Mono',monospace;font-size:13px;line-height:1.6;co
 <p>The first real signal is an apology email your head of support has to write to a key account. The model was capable the whole time. What you lacked was a way to see, score, and fix its behavior in production.</p>
 <p>That gap is the entire reason Mistral AI Studio exists. Not "another place to call a model." A system for running one.</p>
 
-<!-- 01 -->
-<div class="diagram-container"><div class="card">
-  <div class="card-number">01 / 27</div>
-  <div class="card-title">The gap nobody schedules for</div>
-  <div class="card-sub">Experiment velocity races ahead. Production maturity lags. The space between is where silent drift lives.</div>
-  <div class="card-body">
-    <div class="row" style="align-items:stretch">
-      <div class="node blue grow"><div class="nt">Experiment velocity</div><div class="nd">Prompts ship daily. Models change weekly. Demos look great.</div></div>
-      <div class="node red grow"><div class="nt">Production maturity</div><div class="nd">No tracing. No scoring. No rollback. No record of why output changed.</div></div>
-    </div>
-    <div class="center" style="margin-top:16px">
-      <span class="tag gray">THE GAP</span>
-      <div class="w300 muted" style="font-size:13px;margin-top:8px">A prompt tweak ships Tuesday. The tone goes cold. You find out three weeks later, from an apology email.</div>
-    </div>
-  </div>
-  <div class="callout callout-orange">Most AI adoption stalls here, not on model quality.</div>
-  <div class="attribution">Created by Han HELOIR YAN</div>
-</div></div>
+<figure class="shot diagram">
+  <img src="https://cozypet.github.io/mistral-ai-studio/images/diagram-01.png" alt="The gap nobody schedules for">
+</figure>
 
 <div class="cta">
   <p><strong>Before we start!🦸🏻‍♀️</strong> If this helps you ship better AI systems: 👏 Clap 50 times (yes, you can!) — Medium's algorithm favors this, increasing visibility to others who then discover the article. 🔔 Follow me on Medium, LinkedIn and subscribe to get my latest article.</p>
@@ -156,42 +143,15 @@ pre code{font-family:'IBM Plex Mono',monospace;font-size:13px;line-height:1.6;co
 <p class="lead">Most "observability" products stop at a dashboard. You get charts, you nod, nothing changes. AI Studio is built around a different shape: a loop where production usage becomes the fuel for the next improvement.</p>
 <p>Here is the loop. You observe real traffic. You define what good looks like with an evaluator. You run that evaluator across thousands of past conversations. You collect the labeled results into a curated dataset. You use that dataset to measure and improve. Then the improved system ships, generates new traffic, and the loop turns again.</p>
 
-<!-- 02 -->
-<div class="diagram-container"><div class="card">
-  <div class="card-number">02 / 27</div>
-  <div class="card-title">A flywheel, not a dashboard</div>
-  <div class="card-sub">Production usage becomes the fuel for the next improvement. The loop turns on itself.</div>
-  <div class="card-body">
-    <div class="ring">
-      <div class="center-dot">Closed<br>loop</div>
-      <div class="seg" style="top:0;left:50%;transform:translateX(-50%)"><span class="tag blue">OBSERVE</span><div class="faint w300" style="margin-top:4px">read real traffic</div></div>
-      <div class="seg" style="top:34%;right:-10px"><span class="tag orange">EVALUATE</span><div class="faint w300" style="margin-top:4px">define good</div></div>
-      <div class="seg" style="bottom:0;right:8%"><span class="tag orange">ANNOTATE</span><div class="faint w300" style="margin-top:4px">score at scale</div></div>
-      <div class="seg" style="bottom:0;left:8%"><span class="tag green">CURATE</span><div class="faint w300" style="margin-top:4px">build datasets</div></div>
-      <div class="seg" style="top:34%;left:-10px"><span class="tag green">IMPROVE</span><div class="faint w300" style="margin-top:4px">ship + measure</div></div>
-    </div>
-  </div>
-  <div class="callout callout-green">Every turn of the loop makes the next version measurably better.</div>
-  <div class="attribution">Created by Han HELOIR YAN</div>
-</div></div>
+<figure class="shot diagram">
+  <img src="https://cozypet.github.io/mistral-ai-studio/images/diagram-02.png" alt="A flywheel, not a dashboard">
+</figure>
 
 <p>Mistral organizes this into three pillars. <strong>Observability</strong> is how you see and score behavior. <strong>Agent Runtime</strong> is how you execute work durably and reproducibly. <strong>AI Registry</strong> is the system of record that versions every asset and controls what reaches production. The pillars are not three separate tools bolted together. They are three faces of one loop.</p>
 
-<!-- 03 -->
-<div class="diagram-container"><div class="card">
-  <div class="card-number">03 / 27</div>
-  <div class="card-title">Three pillars, one loop</div>
-  <div class="card-sub">Not three tools bolted together. Three faces of the same operational loop.</div>
-  <div class="card-body">
-    <div class="grid3">
-      <div class="node blue"><div class="row" style="gap:10px"><span class="ic blue"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6a9bcc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></span><div class="nt">Observability</div></div><div class="nd">See and score behavior. Explorer, Judges, Campaigns, Datasets.</div></div>
-      <div class="node orange"><div class="row" style="gap:10px"><span class="ic orange"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#d97757" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9z"/></svg></span><div class="nt">Agent Runtime</div></div><div class="nd">Execute work durably and reproducibly. Agents and workflows.</div></div>
-      <div class="node green"><div class="row" style="gap:10px"><span class="ic green"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#788c5d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 2 7l10 5 10-5-10-5z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></svg></span><div class="nt">AI Registry</div></div><div class="nd">Version every asset. Control what reaches production.</div></div>
-    </div>
-  </div>
-  <div class="callout callout-neutral">Observe → Evaluate → Improve runs across all three.</div>
-  <div class="attribution">Created by Han HELOIR YAN</div>
-</div></div>
+<figure class="shot diagram">
+  <img src="https://cozypet.github.io/mistral-ai-studio/images/diagram-03.png" alt="Three pillars, one loop">
+</figure>
 
 <figure class="shot">
   <img src="https://cozypet.github.io/mistral-ai-studio/images/ui-01-studio-home.jpg" alt="Mistral Studio console home, showing Build, Capture and Observe cards and the left navigation">
@@ -227,24 +187,9 @@ resp = client.chat.complete(
 
 <p>The metadata you attach here is not decoration. It becomes the fields you filter on when you are hunting a regression at 2am. Tag traffic with the use case, the tenant, the route, the prompt version. Future you will be grateful.</p>
 
-<!-- 04 -->
-<div class="diagram-container"><div class="card">
-  <div class="card-number">04 / 27</div>
-  <div class="card-title">How the data gets in</div>
-  <div class="card-sub">Explorer is empty until you instrument. One call wires OpenTelemetry tracing into every request.</div>
-  <div class="card-body">
-    <div class="row center">
-      <div class="node orange" style="min-width:130px"><div class="nt">Your app</div><div class="nd">chat.complete()</div></div>
-      <div class="arrow"><svg viewBox="0 0 26 18"><path d="M2 9h18m0 0-5-5m5 5-5 5" stroke="#b0aea5" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <div class="node blue" style="min-width:150px"><div class="nt">OTEL spans</div><div class="nd">GenAI conventions + your metadata</div></div>
-      <div class="arrow"><svg viewBox="0 0 26 18"><path d="M2 9h18m0 0-5-5m5 5-5 5" stroke="#b0aea5" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <div class="node dark" style="min-width:120px"><div class="nt">Explorer</div><div class="nd">searchable events</div></div>
-    </div>
-    <div class="center" style="margin-top:18px"><span class="tag blue">configure_telemetry(client, "dedicated")</span></div>
-  </div>
-  <div class="callout callout-blue">Tag use_case, tenant, route, version now. Those become your filters later.</div>
-  <div class="attribution">Created by Han HELOIR YAN</div>
-</div></div>
+<figure class="shot diagram">
+  <img src="https://cozypet.github.io/mistral-ai-studio/images/diagram-04.png" alt="How the data gets in">
+</figure>
 
 <h3>Explorer: read what actually shipped</h3>
 <p><strong>The story.</strong> With traffic flowing, the engineer opens Explorer and filters to the support route, the last three weeks, only assistant turns longer than a sentence. There they are: forty conversations where the tone went cold right after the prompt change. She has gone from one apology email to the full population of the problem in two minutes.</p>
@@ -268,23 +213,9 @@ events = client.beta.observability.chat_completion_events.search(
 
 <p>The operator vocabulary is broad: <code class="inl">eq</code>, <code class="inl">neq</code>, <code class="inl">gt</code>, <code class="inl">gte</code>, <code class="inl">lt</code>, <code class="inl">lte</code>, <code class="inl">contains</code>, <code class="inl">icontains</code>, <code class="inl">notcontains</code>, <code class="inl">startswith</code>, <code class="inl">endswith</code>, <code class="inl">matches</code>, <code class="inl">isnull</code>, <code class="inl">includes</code>, <code class="inl">excludes</code>, <code class="inl">len_eq</code>. Compose them with nested <code class="inl">and_</code> and <code class="inl">or_</code> groups to slice traffic precisely.</p>
 
-<!-- 05 -->
-<div class="diagram-container"><div class="card">
-  <div class="card-number">05 / 27</div>
-  <div class="card-title">Explorer filter tree anatomy</div>
-  <div class="card-sub">Filters compose as a tree, so a precise slice is a structure, not a guess.</div>
-  <div class="card-body">
-    <div class="center"><div class="node blue" style="display:inline-block">FilterGroup · <span class="mono">and_</span></div></div>
-    <div class="vbar"></div>
-    <div class="grid3">
-      <div class="node"><div class="mono" style="font-size:13px;color:var(--dark-soft)">use_case <span style="color:var(--orange)">eq</span> "support"</div></div>
-      <div class="node"><div class="mono" style="font-size:13px;color:var(--dark-soft)">created_at <span style="color:var(--orange)">gte</span> 2026-05-15</div></div>
-      <div class="node blue"><div class="mono" style="font-size:13px">FilterGroup · or_</div><div class="nd">tone eq RUDE · tone eq CURT</div></div>
-    </div>
-    <div class="center" style="margin-top:16px"><span class="faint mono">ops: eq neq gt gte lt lte contains icontains startswith endswith matches isnull includes excludes len_eq</span></div>
-  </div>
-  <div class="attribution">Created by Han HELOIR YAN</div>
-</div></div>
+<figure class="shot diagram">
+  <img src="https://cozypet.github.io/mistral-ai-studio/images/diagram-05.png" alt="Explorer filter tree anatomy">
+</figure>
 
 <figure class="shot">
   <img src="https://cozypet.github.io/mistral-ai-studio/images/ui-02-explorer.jpg" alt="Explorer view listing chat completion events with a filter bar, time window and column picker">
@@ -298,27 +229,9 @@ similar = client.beta.observability.chat_completion_events.fetch_similar_events(
     event_id=<span class="tok-s">"evt_abc123"</span>,
 )</code></pre>
 
-<!-- 06 -->
-<div class="diagram-container"><div class="card">
-  <div class="card-number">06 / 27</div>
-  <div class="card-title">One failure becomes a cluster</div>
-  <div class="card-sub">fetch_similar_events pulls every sibling of a bad answer without you writing a clever filter.</div>
-  <div class="card-body">
-    <div class="row center">
-      <div class="node red" style="min-width:150px"><div class="nt">1 bad event</div><div class="nd">evt_abc123</div></div>
-      <div class="arrow"><svg viewBox="0 0 26 18"><path d="M2 9h18m0 0-5-5m5 5-5 5" stroke="#b0aea5" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <div class="pill" style="background:var(--orange-soft);border-color:var(--orange-mid);color:var(--orange)">fetch_similar_events</div>
-      <div class="arrow"><svg viewBox="0 0 26 18"><path d="M2 9h18m0 0-5-5m5 5-5 5" stroke="#b0aea5" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <div class="col" style="gap:8px">
-        <div class="node amber" style="padding:8px 12px"><div class="mono" style="font-size:12px">evt_…41 · similar</div></div>
-        <div class="node amber" style="padding:8px 12px"><div class="mono" style="font-size:12px">evt_…77 · similar</div></div>
-        <div class="node amber" style="padding:8px 12px"><div class="mono" style="font-size:12px">evt_…92 · similar</div></div>
-      </div>
-    </div>
-  </div>
-  <div class="callout callout-orange">Semantic search over your own production traffic.</div>
-  <div class="attribution">Created by Han HELOIR YAN</div>
-</div></div>
+<figure class="shot diagram">
+  <img src="https://cozypet.github.io/mistral-ai-studio/images/diagram-06.png" alt="One failure becomes a cluster">
+</figure>
 
 <h3>Judges: turn "this feels rude" into a number</h3>
 <p><strong>The story.</strong> Forty conversations is readable. Forty thousand is not. The team needs to score tone automatically, the same way every time, so the judgment does not depend on who is reading or how tired they are. They write the rubric once as a Judge.</p>
@@ -348,26 +261,9 @@ tone_judge = client.beta.observability.judges.create(
     ),
 )</code></pre>
 
-<!-- 07 -->
-<div class="diagram-container"><div class="card">
-  <div class="card-number">07 / 27</div>
-  <div class="card-title">Two ways a Judge answers</div>
-  <div class="card-sub">Classification returns a label. Regression returns a score. Pick by the question you are asking.</div>
-  <div class="card-body">
-    <div class="grid2">
-      <div class="node blue"><div class="nt">CLASSIFICATION</div><div class="nd">Discrete label</div>
-        <div class="row" style="margin-top:10px;gap:8px"><span class="tag green">PROFESSIONAL</span><span class="tag amber">CURT</span><span class="tag red">RUDE</span></div>
-        <div class="faint w300" style="margin-top:8px">Use for: tone, category, pass/fail policy checks.</div>
-      </div>
-      <div class="node orange"><div class="nt">REGRESSION</div><div class="nd">Continuous score</div>
-        <div style="margin-top:12px;height:8px;border-radius:100px;background:linear-gradient(90deg,var(--red-soft),var(--green-soft));border:1px solid var(--border)"></div>
-        <div class="row" style="justify-content:space-between;margin-top:6px"><span class="faint mono">0.0 not helpful</span><span class="faint mono">1.0 perfect</span></div>
-        <div class="faint w300" style="margin-top:8px">Use for: helpfulness, faithfulness, graded quality.</div>
-      </div>
-    </div>
-  </div>
-  <div class="attribution">Created by Han HELOIR YAN</div>
-</div></div>
+<figure class="shot diagram">
+  <img src="https://cozypet.github.io/mistral-ai-studio/images/diagram-07.png" alt="Two ways a Judge answers">
+</figure>
 
 <p>The trap with evaluators is spending real money running a flawed rubric across your whole history. So before scaling, test the Judge on a single record. The platform even gives Judges their own Playground for exactly this.</p>
 
@@ -377,23 +273,9 @@ result = client.beta.observability.chat_completion_events.judge(
     judge_id=tone_judge.id,
 )</code></pre>
 
-<!-- 08 -->
-<div class="diagram-container"><div class="card">
-  <div class="card-number">08 / 27</div>
-  <div class="card-title">A Judge, and the dry run that saves money</div>
-  <div class="card-sub">Three parts define it. One record proves it before you spend at scale.</div>
-  <div class="card-body">
-    <div class="grid3">
-      <div class="node"><span class="ic gray"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5c5b55" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 3v4M8 3v4"/></svg></span><div class="nt" style="margin-top:8px">Model</div><div class="nd">mistral-large-latest</div></div>
-      <div class="node"><span class="ic gray"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5c5b55" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v12H7l-3 3z"/></svg></span><div class="nt" style="margin-top:8px">Instructions</div><div class="nd">the rubric, in words</div></div>
-      <div class="node"><span class="ic gray"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5c5b55" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M4 12h10M4 17h7"/></svg></span><div class="nt" style="margin-top:8px">Output schema</div><div class="nd">label or score</div></div>
-    </div>
-    <div class="vbar"></div>
-    <div class="center"><div class="node green" style="display:inline-block"><span class="mono" style="font-size:13px;color:var(--green)">chat_completion_events.judge(event_id, judge_id)</span><div class="nd">run on ONE event first</div></div></div>
-  </div>
-  <div class="callout callout-green">Validate before you scale. A flawed rubric times 5,000 events is a bill.</div>
-  <div class="attribution">Created by Han HELOIR YAN</div>
-</div></div>
+<figure class="shot diagram">
+  <img src="https://cozypet.github.io/mistral-ai-studio/images/diagram-08.png" alt="A Judge, and the dry run that saves money">
+</figure>
 
 <figure class="shot">
   <img src="https://cozypet.github.io/mistral-ai-studio/images/ui-03-create-judge.jpg" alt="Create a new judge form with model, instructions, tools, type and output options, plus an LLM Judges explainer panel">
@@ -429,30 +311,9 @@ annotated = client.beta.observability.campaigns.list_events(campaign_id=campaign
 
 <p>This is the step that kills the manual labeling bottleneck. Weeks of human annotation collapse into an overnight job.</p>
 
-<!-- 09 -->
-<div class="diagram-container"><div class="card">
-  <div class="card-number">09 / 27</div>
-  <div class="card-title">Campaign lifecycle</div>
-  <div class="card-sub">Point a Judge at a filtered slice of history. It runs async while you sleep.</div>
-  <div class="card-body">
-    <div class="row center">
-      <div class="node blue"><div class="nt">Filter</div><div class="nd">Q2 support traffic</div></div>
-      <span class="chev">›</span>
-      <div class="node orange"><div class="nt">Judge</div><div class="nd">one per campaign</div></div>
-      <span class="chev">›</span>
-      <div class="node amber"><div class="nt">Running</div><div class="nd">async · poll status</div></div>
-      <span class="chev">›</span>
-      <div class="node green"><div class="nt">Annotated</div><div class="nd">every event labeled</div></div>
-    </div>
-    <div class="row center" style="margin-top:16px">
-      <span class="tag gray">CAP 100 – 10,000 EVENTS</span>
-      <span class="tag blue">fetch_status</span>
-      <span class="tag green">list_events</span>
-    </div>
-  </div>
-  <div class="callout callout-orange">Weeks of manual labeling collapse into one overnight job.</div>
-  <div class="attribution">Created by Han HELOIR YAN</div>
-</div></div>
+<figure class="shot diagram">
+  <img src="https://cozypet.github.io/mistral-ai-studio/images/diagram-09.png" alt="Campaign lifecycle">
+</figure>
 
 <h3>Datasets: production traffic becomes a regression baseline</h3>
 <p><strong>The story.</strong> The team now has 5,000 labeled conversations. The RUDE and CURT ones are gold: they are exactly the cases the next prompt must handle. They pull those into a named Dataset, fix a few messages by hand, write the ideal reply for each, and freeze it. From now on, every candidate change is tested against this set before it ships. The silent drift can never happen invisibly again, because this Dataset is the tripwire.</p>
@@ -481,68 +342,20 @@ client.beta.observability.datasets.export_to_jsonl(dataset_id=dataset.id)</code>
 
 <p>Notice the import methods: <code class="inl">import_from_explorer</code>, <code class="inl">import_from_campaign</code>, <code class="inl">import_from_playground</code>, <code class="inl">import_from_file</code>. The flywheel is not a metaphor here. It is a method signature.</p>
 
-<!-- 10 -->
-<div class="diagram-container"><div class="card">
-  <div class="card-number">10 / 27</div>
-  <div class="card-title">The flywheel is a method signature</div>
-  <div class="card-sub">Datasets import from every source in the loop, then export clean JSONL.</div>
-  <div class="card-body">
-    <div class="row" style="align-items:center">
-      <div class="col grow" style="gap:8px">
-        <div class="node blue" style="padding:8px 12px"><div class="mono" style="font-size:12px">import_from_explorer</div></div>
-        <div class="node orange" style="padding:8px 12px"><div class="mono" style="font-size:12px">import_from_campaign</div></div>
-        <div class="node" style="padding:8px 12px"><div class="mono" style="font-size:12px">import_from_playground</div></div>
-        <div class="node" style="padding:8px 12px"><div class="mono" style="font-size:12px">import_from_file</div></div>
-      </div>
-      <div class="arrow"><svg viewBox="0 0 26 18"><path d="M2 9h18m0 0-5-5m5 5-5 5" stroke="#b0aea5" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <div class="node green" style="min-width:120px"><div class="nt">Dataset</div><div class="nd">curated · editable · versioned</div></div>
-      <div class="arrow"><svg viewBox="0 0 26 18"><path d="M2 9h18m0 0-5-5m5 5-5 5" stroke="#b0aea5" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <div class="node dark" style="min-width:96px"><div class="nt">export_to_jsonl</div></div>
-    </div>
-  </div>
-  <div class="callout callout-green">Production traffic in, regression baseline out.</div>
-  <div class="attribution">Created by Han HELOIR YAN</div>
-</div></div>
+<figure class="shot diagram">
+  <img src="https://cozypet.github.io/mistral-ai-studio/images/diagram-10.png" alt="The flywheel is a method signature">
+</figure>
 
-<!-- 11 -->
-<div class="diagram-container"><div class="card">
-  <div class="card-number">11 / 27</div>
-  <div class="card-title">What lives inside a record</div>
-  <div class="card-sub">Properties are what make a Dataset more than a pile of conversations.</div>
-  <div class="card-body">
-    <div class="grid3">
-      <div class="node blue"><div class="nt">messages</div><div class="nd">the conversation, editable</div></div>
-      <div class="node green"><div class="nt">expected_output</div><div class="nd">the ideal reply a Judge compares against</div></div>
-      <div class="node orange"><div class="nt">category + grading_guidance</div><div class="nd">how this case should be judged</div></div>
-    </div>
-  </div>
-  <div class="callout callout-neutral">Fix messages, add the gold answer, tell the Judge how to grade it.</div>
-  <div class="attribution">Created by Han HELOIR YAN</div>
-</div></div>
+<figure class="shot diagram">
+  <img src="https://cozypet.github.io/mistral-ai-studio/images/diagram-11.png" alt="What lives inside a record">
+</figure>
 
 <h3>Closing the measurement loop</h3>
 <p>Above the four building blocks, AI Studio adds Experiments, Iterations, and Dashboards so improvement is measurable rather than anecdotal, plus lineage that traces an outcome back to the prompt, the prompt back to its version, and the version back to the real traffic that produced it. That lineage is what lets you say "accuracy went up 6 points because of change X," instead of "it feels better."</p>
 
-<!-- 12 -->
-<div class="diagram-container"><div class="card">
-  <div class="card-number">12 / 27</div>
-  <div class="card-title">Lineage closes the measurement loop</div>
-  <div class="card-sub">Trace an outcome back to the version and the traffic that produced it.</div>
-  <div class="card-body">
-    <div class="row center">
-      <div class="node green"><div class="nt">Outcome</div><div class="nd">+6 pts on tone</div></div>
-      <span class="chev">‹</span>
-      <div class="node"><div class="nt">Prompt</div><div class="nd">the exact text</div></div>
-      <span class="chev">‹</span>
-      <div class="node"><div class="nt">Version</div><div class="nd">v3 vs v2</div></div>
-      <span class="chev">‹</span>
-      <div class="node blue"><div class="nt">Real usage</div><div class="nd">the events behind it</div></div>
-    </div>
-    <div class="center" style="margin-top:14px"><span class="tag gray">EXPERIMENTS · ITERATIONS · DASHBOARDS</span></div>
-  </div>
-  <div class="callout callout-green">"Accuracy rose because of change X." Not "it feels better."</div>
-  <div class="attribution">Created by Han HELOIR YAN</div>
-</div></div>
+<figure class="shot diagram">
+  <img src="https://cozypet.github.io/mistral-ai-studio/images/diagram-12.png" alt="Lineage closes the measurement loop">
+</figure>
 
 <figure class="shot">
   <img src="https://cozypet.github.io/mistral-ai-studio/images/ui-04-evaluations.jpg" alt="Evaluations view showing runs of a model against a dataset with average score and standard deviation">
@@ -553,57 +366,18 @@ client.beta.observability.datasets.export_to_jsonl(dataset_id=dataset.id)</code>
 <p class="lead">Observability tells you what happened. The Agent Runtime is where work actually happens, and it is the part most teams underestimate until it burns them.</p>
 <p><strong>The story that motivates everything here.</strong> Your support assistant grows up. It no longer just answers questions, it processes a refund: look up the order, check the policy, call the payments API, email the customer, log the case. You wired that as a Python script with five API calls in a row. It works in the demo. In production, the payments call times out on call number four. Now you have charged nothing but emailed the customer a confirmation, or refunded twice on a retry, and you have no record of which step failed or why. A sequence of API calls is not a system. It has no memory, no recovery, and no audit trail.</p>
 
-<!-- 13 -->
-<div class="diagram-container"><div class="card">
-  <div class="card-number">13 / 27</div>
-  <div class="card-title">A script is not a system</div>
-  <div class="card-sub">Five API calls in a row look fine in the demo and lose your money in production.</div>
-  <div class="card-body">
-    <div class="grid2">
-      <div class="node red"><div class="nt">Fragile script</div>
-        <div class="stack" style="margin-top:10px">
-          <span class="tag green">lookup order ✓</span><span class="tag green">check policy ✓</span><span class="tag green">refund ✓</span>
-          <span class="tag red">payments TIMEOUT ✗</span>
-          <span class="faint w300">no memory · no recovery · no record</span>
-        </div>
-      </div>
-      <div class="node green"><div class="nt">Durable runtime</div>
-        <div class="stack" style="margin-top:10px">
-          <span class="tag green">lookup order ✓</span><span class="tag green">check policy ✓</span><span class="tag green">refund ✓</span>
-          <span class="tag amber">payments retry → ✓</span>
-          <span class="faint w300">resumes · never double runs · audited</span>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="attribution">Created by Han HELOIR YAN</div>
-</div></div>
+<figure class="shot diagram">
+  <img src="https://cozypet.github.io/mistral-ai-studio/images/diagram-13.png" alt="A script is not a system">
+</figure>
 
 <p>The Agent Runtime is the answer to that failure. It is the execution backbone that runs every agent, from a single answer to a long business process, with durability, transparency, and reproducibility. Under the hood it leans on a durable execution engine (Temporal), but you never have to think about that. What you get is the behavior.</p>
 
 <h3>Durability and reproducibility</h3>
 <p><strong>Why it matters.</strong> When step four fails, a durable runtime does not lose the first three steps. It resumes from where it broke, retries with consistent behavior, and never double executes a step it already completed. The refund either fully happens or cleanly does not. That is the difference between a script and a system.</p>
 
-<!-- 14 -->
-<div class="diagram-container"><div class="card">
-  <div class="card-number">14 / 27</div>
-  <div class="card-title">Surviving the failure at step four</div>
-  <div class="card-sub">A durable run resumes where it broke and never re executes a completed step.</div>
-  <div class="card-body">
-    <div class="row center">
-      <div class="num" style="background:var(--green)">1</div><span class="chev">›</span>
-      <div class="num" style="background:var(--green)">2</div><span class="chev">›</span>
-      <div class="num" style="background:var(--green)">3</div><span class="chev">›</span>
-      <div class="num" style="background:var(--amber)">4</div>
-      <div class="col" style="gap:4px;margin-left:6px"><span class="tag amber">retry</span><span class="faint mono">idempotent</span></div>
-      <span class="chev">›</span>
-      <div class="num" style="background:var(--green)">5</div>
-    </div>
-    <div class="center" style="margin-top:14px"><span class="faint w300">Steps 1 to 3 stay done. Only step 4 retries. Step 5 never fires twice.</span></div>
-  </div>
-  <div class="callout callout-green">The refund either fully happens or cleanly does not.</div>
-  <div class="attribution">Created by Han HELOIR YAN</div>
-</div></div>
+<figure class="shot diagram">
+  <img src="https://cozypet.github.io/mistral-ai-studio/images/diagram-14.png" alt="Surviving the failure at step four">
+</figure>
 
 <h3>Stateful conversations</h3>
 <p><strong>The story.</strong> A customer starts a return on Monday and replies to your follow up on Wednesday. With a stateless script you would stitch the history together by hand every time and pray you got the ordering right. The runtime keeps conversation state for you, so Wednesday's reply continues Monday's thread with full context.</p>
@@ -623,48 +397,16 @@ conv = client.beta.conversations.append(
 
 history = client.beta.conversations.get_history(conversation_id=conv.conversation_id)</code></pre>
 
-<!-- 15 -->
-<div class="diagram-container"><div class="card">
-  <div class="card-number">15 / 27</div>
-  <div class="card-title">A conversation that remembers</div>
-  <div class="card-sub">State persists across turns and across days. Append to the same thread, do not rebuild it.</div>
-  <div class="card-body">
-    <div class="row center">
-      <div class="node blue"><div class="nt">Mon</div><div class="nd">conversations.start()</div></div>
-      <div class="arrow"><svg viewBox="0 0 26 18"><path d="M2 9h18m0 0-5-5m5 5-5 5" stroke="#b0aea5" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <div class="node dark"><div class="nt">state held</div><div class="nd">conversation_id</div></div>
-      <div class="arrow"><svg viewBox="0 0 26 18"><path d="M2 9h18m0 0-5-5m5 5-5 5" stroke="#b0aea5" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <div class="node green"><div class="nt">Wed</div><div class="nd">conversations.append()</div></div>
-    </div>
-  </div>
-  <div class="callout callout-blue">Wednesday's reply continues Monday's thread with full context.</div>
-  <div class="attribution">Created by Han HELOIR YAN</div>
-</div></div>
+<figure class="shot diagram">
+  <img src="https://cozypet.github.io/mistral-ai-studio/images/diagram-15.png" alt="A conversation that remembers">
+</figure>
 
 <h3>Auditable execution graphs and large payloads</h3>
 <p><strong>Why it matters.</strong> Every run produces a static graph of the path it took, which step called which tool, what came back. When the refund goes wrong, you do not guess. You open the graph and see exactly where it stopped. The runtime also offloads large documents to object storage instead of dragging them through every step, so a 200 page contract in the flow does not blow up your payloads.</p>
 
-<!-- 16 -->
-<div class="diagram-container"><div class="card">
-  <div class="card-number">16 / 27</div>
-  <div class="card-title">Every run draws its own map</div>
-  <div class="card-sub">A static execution graph shows which step called which tool and what came back.</div>
-  <div class="card-body">
-    <div class="col" style="gap:0">
-      <div class="row center"><div class="node dark" style="min-width:130px"><div class="nt">refund_flow</div></div></div>
-      <div class="vbar"></div>
-      <div class="row center">
-        <div class="node green"><div class="nt">lookup</div><div class="nd">orders API</div></div>
-        <div class="node green"><div class="nt">policy</div><div class="nd">rules lib</div></div>
-        <div class="node green"><div class="nt">refund</div><div class="nd">payments API</div></div>
-        <div class="node blue"><div class="nt">notify</div><div class="nd">email tool</div></div>
-      </div>
-      <div class="center" style="margin-top:12px"><span class="faint w300">Large docs offload to object storage instead of riding through every step.</span></div>
-    </div>
-  </div>
-  <div class="callout callout-neutral">When it breaks, open the graph. Do not guess.</div>
-  <div class="attribution">Created by Han HELOIR YAN</div>
-</div></div>
+<figure class="shot diagram">
+  <img src="https://cozypet.github.io/mistral-ai-studio/images/diagram-16.png" alt="Every run draws its own map">
+</figure>
 
 <figure class="shot">
   <img src="https://cozypet.github.io/mistral-ai-studio/images/ui-07-run-trace.jpg" alt="A single workflow run traced as a timeline of steps with per step durations and an Inspector showing JSON output">
@@ -674,44 +416,18 @@ history = client.beta.conversations.get_history(conversation_id=conv.conversatio
 <h3>The loop closes here</h3>
 <p><strong>Why it matters.</strong> This is the quiet genius of the design. Every execution in the runtime emits telemetry and evaluation data straight back into Observability. The work your agents do becomes the traffic your Judges score becomes the Datasets that improve the next version. Runtime feeds Observability feeds improvement feeds Runtime. The flywheel turns without you carrying buckets between pillars.</p>
 
-<!-- 17 -->
-<div class="diagram-container"><div class="card">
-  <div class="card-number">17 / 27</div>
-  <div class="card-title">The loop closes itself</div>
-  <div class="card-sub">Runtime executions emit telemetry straight back into Observability. No buckets carried by hand.</div>
-  <div class="card-body">
-    <div class="row center">
-      <div class="node orange" style="min-width:140px"><div class="nt">Agent Runtime</div><div class="nd">every execution</div></div>
-      <div class="arrow"><svg viewBox="0 0 26 18"><path d="M2 9h18m0 0-5-5m5 5-5 5" stroke="#d97757" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <div class="node blue" style="min-width:140px"><div class="nt">Observability</div><div class="nd">scored by Judges</div></div>
-      <div class="arrow"><svg viewBox="0 0 26 18"><path d="M2 9h18m0 0-5-5m5 5-5 5" stroke="#6a9bcc" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <div class="node green" style="min-width:140px"><div class="nt">Better version</div><div class="nd">ships to Runtime</div></div>
-    </div>
-    <div class="center" style="margin-top:10px"><span class="faint w300">… which feeds Runtime again.</span></div>
-  </div>
-  <div class="callout callout-green">Work becomes traffic becomes training signal becomes better work.</div>
-  <div class="attribution">Created by Han HELOIR YAN</div>
-</div></div>
+<figure class="shot diagram">
+  <img src="https://cozypet.github.io/mistral-ai-studio/images/diagram-17.png" alt="The loop closes itself">
+</figure>
 
 <h2>Workflows</h2>
 <p class="lead">If the Agent Runtime is the engine, Workflows are what you actually build and operate on top of it. This is the working core of the runtime, so it deserves real attention, not a footnote.</p>
 <p><strong>The story.</strong> Your refund process is not one agent thinking. It is a defined business flow: validate the order, check eligibility, attempt the refund, notify the customer, escalate to a human if the amount is over a threshold. You want to define that flow once, run it thousands of times, schedule it, and inspect every run when finance asks "what happened to case 9981?" That is a Workflow.</p>
 <p><strong>Why and when.</strong> Reach for a Workflow when the process has structure that should outlive any single call: many steps, branching, retries, a schedule, or a need to inspect run history later. Reach for a plain agent call when the task is a single turn with no durability needs. The dividing line is whether you would be upset if the process forgot where it was halfway through.</p>
 
-<!-- 18 -->
-<div class="diagram-container"><div class="card">
-  <div class="card-number">18 / 27</div>
-  <div class="card-title">Agent call or workflow?</div>
-  <div class="card-sub">The line: would you be upset if the process forgot where it was halfway through?</div>
-  <div class="card-body">
-    <div class="grid2">
-      <div class="node blue"><div class="nt">Single agent call</div><div class="nd">one turn, no durability needed. Ask, answer, done.</div></div>
-      <div class="node orange"><div class="nt">Workflow</div><div class="nd">many steps, branching, retries, schedules, inspectable history.</div></div>
-    </div>
-    <div class="center" style="margin-top:14px"><span class="tag gray">REFUND FLOW = WORKFLOW</span></div>
-  </div>
-  <div class="attribution">Created by Han HELOIR YAN</div>
-</div></div>
+<figure class="shot diagram">
+  <img src="https://cozypet.github.io/mistral-ai-studio/images/diagram-18.png" alt="Agent call or workflow?">
+</figure>
 
 <figure class="shot">
   <img src="https://cozypet.github.io/mistral-ai-studio/images/ui-05-workflows-list.jpg" alt="Workflows List view showing defined workflows with status, last execution and execution count">
@@ -735,22 +451,9 @@ runs = client.workflows.runs.list_runs()
 history = client.workflows.runs.get_run_history(run_id=<span class="tok-s">"run_9981"</span>)
 <span class="tok-c"># -> each step, its inputs, outputs, retries, and final status</span></code></pre>
 
-<!-- 19 -->
-<div class="diagram-container"><div class="card">
-  <div class="card-number">19 / 27</div>
-  <div class="card-title">Run history is what finance asks for</div>
-  <div class="card-sub">"What happened to case 9981?" Every execution is durable and step by step inspectable.</div>
-  <div class="card-body">
-    <div class="stack">
-      <div class="row"><div class="num" style="background:var(--green);width:26px;height:26px;font-size:12px">1</div><div class="node grow" style="padding:8px 12px"><span class="mono" style="font-size:12px">validate_order → ok</span></div><span class="tag green">done</span></div>
-      <div class="row"><div class="num" style="background:var(--green);width:26px;height:26px;font-size:12px">2</div><div class="node grow" style="padding:8px 12px"><span class="mono" style="font-size:12px">check_eligibility → ok</span></div><span class="tag green">done</span></div>
-      <div class="row"><div class="num" style="background:var(--amber);width:26px;height:26px;font-size:12px">3</div><div class="node grow" style="padding:8px 12px"><span class="mono" style="font-size:12px">refund → timeout, retried</span></div><span class="tag amber">recovered</span></div>
-      <div class="row"><div class="num" style="background:var(--green);width:26px;height:26px;font-size:12px">4</div><div class="node grow" style="padding:8px 12px"><span class="mono" style="font-size:12px">notify_customer → sent</span></div><span class="tag green">done</span></div>
-    </div>
-    <div class="center" style="margin-top:12px"><span class="faint mono">workflows.runs.get_run_history(run_id)</span></div>
-  </div>
-  <div class="attribution">Created by Han HELOIR YAN</div>
-</div></div>
+<figure class="shot diagram">
+  <img src="https://cozypet.github.io/mistral-ai-studio/images/diagram-19.png" alt="Run history is what finance asks for">
+</figure>
 
 <figure class="shot">
   <img src="https://cozypet.github.io/mistral-ai-studio/images/ui-06-workflow-executions.jpg" alt="Workflows Executions table with statuses Running, Timed Out, Failed, Completed, durations and deployments">
@@ -769,22 +472,9 @@ client.workflows.schedules.schedule_workflow(
 client.workflows.schedules.pause_schedule(schedule_id=<span class="tok-s">"sched_123"</span>)
 client.workflows.schedules.resume_schedule(schedule_id=<span class="tok-s">"sched_123"</span>)</code></pre>
 
-<!-- 20 -->
-<div class="diagram-container"><div class="card">
-  <div class="card-number">20 / 27</div>
-  <div class="card-title">What you assemble a workflow from</div>
-  <div class="card-sub">Steps, tools and connectors, a schedule, and a durable run record.</div>
-  <div class="card-body">
-    <div class="grid4">
-      <div class="node"><span class="ic gray"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5c5b55" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg></span><div class="nt" style="margin-top:8px">Steps</div><div class="nd">ordered, branchable</div></div>
-      <div class="node"><span class="ic gray"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5c5b55" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4l-6 6 2 2 6-6a4 4 0 0 0 5.4-5.4l-2.3 2.3-2-2z"/></svg></span><div class="nt" style="margin-top:8px">Tools + connectors</div><div class="nd">act on real systems</div></div>
-      <div class="node"><span class="ic gray"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5c5b55" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><div class="nt" style="margin-top:8px">Schedule</div><div class="nd">cron · pause · resume</div></div>
-      <div class="node"><span class="ic gray"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5c5b55" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4v16M4 8h16M4 16h16"/></svg></span><div class="nt" style="margin-top:8px">Run record</div><div class="nd">durable, inspectable</div></div>
-    </div>
-  </div>
-  <div class="callout callout-orange">Define once. Run thousands of times. Inspect any one of them.</div>
-  <div class="attribution">Created by Han HELOIR YAN</div>
-</div></div>
+<figure class="shot diagram">
+  <img src="https://cozypet.github.io/mistral-ai-studio/images/diagram-20.png" alt="What you assemble a workflow from">
+</figure>
 
 <figure class="shot">
   <img src="https://cozypet.github.io/mistral-ai-studio/images/ui-08-workflow-detail.jpg" alt="A single workflow detail page showing deployment, workflow ID, error rate, average latency and an execution history">
@@ -798,21 +488,9 @@ client.workflows.schedules.resume_schedule(schedule_id=<span class="tok-s">"sche
 <p><strong>The story.</strong> You ship support agent v3 on Friday. By Saturday, your tone Dashboard is red: v3 is curt. In a world without a registry, "rolling back" means someone digging through commits, redeploying, and hoping. In AI Studio, production does not point at v3. It points at an alias named <code class="inl">production</code> that you can repoint to v2 in one call. The bad version is out of the line of fire in seconds, and every version is still on record for the postmortem.</p>
 <p><strong>Why it matters.</strong> The Registry is the system of record for every asset across the lifecycle: agents, models, datasets, judges, tools, and workflows. It tracks lineage, ownership, and versioning, and it enforces access controls, moderation policies, and promotion gates before anything reaches production. The concrete payoff lives in three SDK behaviors.</p>
 
-<!-- 21 -->
-<div class="diagram-container"><div class="card">
-  <div class="card-number">21 / 27</div>
-  <div class="card-title">The Registry is the spine</div>
-  <div class="card-sub">System of record for every asset, sitting between what you observe and what you run.</div>
-  <div class="card-body">
-    <div class="row center" style="align-items:stretch">
-      <div class="node blue grow"><div class="nt">Observability</div><div class="nd">metrics, evals</div></div>
-      <div class="node dark grow"><div class="nt">AI Registry</div><div class="nd">agents · models · datasets · judges · tools · workflows</div><div class="row" style="margin-top:8px;gap:6px"><span class="tag gray" style="border-color:var(--dark-muted);color:var(--mid-gray);background:transparent">lineage</span><span class="tag gray" style="border-color:var(--dark-muted);color:var(--mid-gray);background:transparent">versioning</span><span class="tag gray" style="border-color:var(--dark-muted);color:var(--mid-gray);background:transparent">access</span></div></div>
-      <div class="node orange grow"><div class="nt">Agent Runtime</div><div class="nd">orchestration, deploy</div></div>
-    </div>
-  </div>
-  <div class="callout callout-neutral">Every output traces to a version. Every promotion to who approved it.</div>
-  <div class="attribution">Created by Han HELOIR YAN</div>
-</div></div>
+<figure class="shot diagram">
+  <img src="https://cozypet.github.io/mistral-ai-studio/images/diagram-21.png" alt="The Registry is the spine">
+</figure>
 
 <p><strong>Versioning and aliases give you instant rollback.</strong> Agents are versioned, and you point a stable alias at whichever version is live.</p>
 
@@ -827,24 +505,9 @@ client.beta.agents.update_version(
 )
 <span class="tok-c"># Production now serves v2 again. v3 is still on record for the postmortem.</span></code></pre>
 
-<!-- 22 -->
-<div class="diagram-container"><div class="card">
-  <div class="card-number">22 / 27</div>
-  <div class="card-title">Rollback is one call</div>
-  <div class="card-sub">Production points at an alias, not a version. Repoint it and the bad version is out of the line of fire.</div>
-  <div class="card-body">
-    <div class="row center">
-      <div class="node"><div class="nt">Fri</div><div class="nd">alias <span class="mono">production → v3</span></div></div>
-      <div class="arrow"><svg viewBox="0 0 26 18"><path d="M2 9h18m0 0-5-5m5 5-5 5" stroke="#b0aea5" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <div class="node red"><div class="nt">Sat</div><div class="nd">tone dashboard red</div></div>
-      <div class="arrow"><svg viewBox="0 0 26 18"><path d="M2 9h18m0 0-5-5m5 5-5 5" stroke="#b54a3a" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <div class="node green"><div class="nt">Sat +1 call</div><div class="nd">alias <span class="mono">production → v2</span></div></div>
-    </div>
-    <div class="center" style="margin-top:12px"><span class="faint w300">v3 stays on record for the postmortem.</span></div>
-  </div>
-  <div class="callout callout-green">Seconds, not an afternoon of digging through commits.</div>
-  <div class="attribution">Created by Han HELOIR YAN</div>
-</div></div>
+<figure class="shot diagram">
+  <img src="https://cozypet.github.io/mistral-ai-studio/images/diagram-22.png" alt="Rollback is one call">
+</figure>
 
 <p><strong>Access control decides who can touch shared assets.</strong> A shared knowledge library or a judge pack should not be editable by everyone. The Registry attaches access rules to assets.</p>
 
@@ -854,24 +517,9 @@ client.beta.libraries.accesses.update(
     <span class="tok-c"># share with an org/team at the desired level per the accesses API</span>
 )</code></pre>
 
-<!-- 23 -->
-<div class="diagram-container"><div class="card">
-  <div class="card-number">23 / 27</div>
-  <div class="card-title">Shared assets need a lock</div>
-  <div class="card-sub">A knowledge library or judge pack should not be editable by everyone. Access rules attach to the asset.</div>
-  <div class="card-body">
-    <div class="row center">
-      <div class="node green"><div class="row" style="gap:10px"><span class="ic green"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#788c5d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5V6a2 2 0 0 1 2-2h12v16H6a2 2 0 0 1-2-2z"/></svg></span><div class="nt">lib_policies</div></div></div>
-      <div class="col" style="gap:8px">
-        <div class="row"><span class="tag blue">support team</span><span class="faint mono">read</span></div>
-        <div class="row"><span class="tag orange">platform team</span><span class="faint mono">write</span></div>
-        <div class="row"><span class="tag gray">everyone else</span><span class="faint mono">none</span></div>
-      </div>
-    </div>
-    <div class="center" style="margin-top:12px"><span class="faint mono">libraries.accesses.update(library_id, …)</span></div>
-  </div>
-  <div class="attribution">Created by Han HELOIR YAN</div>
-</div></div>
+<figure class="shot diagram">
+  <img src="https://cozypet.github.io/mistral-ai-studio/images/diagram-23.png" alt="Shared assets need a lock">
+</figure>
 
 <p><strong>Promotion gates and moderation policies stop a bad version reaching users.</strong> The Registry sits in front of deployment, so a version has to clear your gates (and your moderation policy) before it is promoted. That is the technical backbone of an AI governance story you can show an auditor: every output traces to a version, every version to the data that shaped it, every promotion to who approved it.</p>
 
@@ -893,67 +541,25 @@ client.beta.libraries.accesses.update(
 <p><strong>Classifiers and Moderation.</strong> When you need a fast policy gate on inputs or outputs, the moderation classifiers flag unsafe content before it reaches a user. This is also a Registry citizen: moderation policy is enforced at promotion. Path: <code class="inl">client.classifiers</code>.</p>
 <p><strong>Vibe CLI.</strong> When you would rather scaffold agents and skills from your terminal than click through a console, the Vibe CLI is the code first entry point to the same platform.</p>
 
-<!-- 24 -->
-<div class="diagram-container"><div class="card">
-  <div class="card-number">24 / 27</div>
-  <div class="card-title">The rest of the toolbox, by the moment you reach for it</div>
-  <div class="card-sub">Same platform, same governance. Each capability has one clear trigger.</div>
-  <div class="card-body">
-    <div class="grid2">
-      <div class="node"><div class="nt">Knowledge + RAG</div><div class="nd">answer from your PDFs, not training data · <span class="mono">beta.libraries</span></div></div>
-      <div class="node"><div class="nt">Connectors</div><div class="nd">live data from systems you run · <span class="mono">beta.connectors</span></div></div>
-      <div class="node"><div class="nt">Document AI</div><div class="nd">scanned invoice to structured text · <span class="mono">ocr</span></div></div>
-      <div class="node"><div class="nt">Audio + realtime</div><div class="nd">voice channels, streaming transcription · <span class="mono">audio</span></div></div>
-      <div class="node"><div class="nt">Batch</div><div class="nd">a million rows offline, far cheaper · <span class="mono">batch</span></div></div>
-      <div class="node"><div class="nt">Codestral / FIM</div><div class="nd">complete inside a file · <span class="mono">fim</span></div></div>
-      <div class="node"><div class="nt">Embeddings</div><div class="nd">your own semantic search · <span class="mono">embeddings</span></div></div>
-      <div class="node"><div class="nt">Moderation</div><div class="nd">fast policy gate, enforced at promotion · <span class="mono">classifiers</span></div></div>
-    </div>
-    <div class="center" style="margin-top:14px"><span class="tag gray">VIBE CLI · CODE FIRST ENTRY TO THE SAME PLATFORM</span></div>
-  </div>
-  <div class="attribution">Created by Han HELOIR YAN</div>
-</div></div>
+<figure class="shot diagram">
+  <img src="https://cozypet.github.io/mistral-ai-studio/images/diagram-24.png" alt="The rest of the toolbox, by the moment you reach for it">
+</figure>
 
 <h2>Deployment and sovereignty</h2>
 <p class="lead">For a regulated buyer, this section is the one they read first, so do not bury it.</p>
 <p>AI Studio supports hybrid, dedicated, and self hosted deployments, with full data ownership. You can run agents and workflows close to your own systems and migrate between environments without re architecting, while keeping the same durability, traceability, and control. For a European bank or a hospital, that combination of audit trail, governance, and the option to keep data on infrastructure they control is not a nice to have. It is the thing that decides whether the project is allowed to exist.</p>
 
-<!-- 25 -->
-<div class="diagram-container"><div class="card">
-  <div class="card-number">25 / 27</div>
-  <div class="card-title">Run it where the rules say you must</div>
-  <div class="card-sub">Same durability, traceability, and control across every deployment mode.</div>
-  <div class="card-body">
-    <div class="grid3">
-      <div class="node blue"><div class="nt">Hybrid</div><div class="nd">platform plus your environment</div></div>
-      <div class="node orange"><div class="nt">Dedicated</div><div class="nd">isolated capacity</div></div>
-      <div class="node green"><div class="nt">Self hosted</div><div class="nd">your infrastructure, full data ownership</div></div>
-    </div>
-  </div>
-  <div class="callout callout-green">For a regulated buyer, this is what decides whether the project is allowed to exist.</div>
-  <div class="attribution">Created by Han HELOIR YAN</div>
-</div></div>
+<figure class="shot diagram">
+  <img src="https://cozypet.github.io/mistral-ai-studio/images/diagram-25.png" alt="Run it where the rules say you must">
+</figure>
 
 <h2>The honest part</h2>
 <p class="lead">No platform is free of trade offs, and pretending otherwise insults the reader.</p>
 <p>The full Observability suite is Enterprise tier today, so smaller teams may not have access to the exact loop described here. A Judge is a model grading another model, which means your evaluator has its own error rate; always validate a Judge against a human labeled sample before you trust its numbers at scale. Campaigns cost real inference money, so a careless 10,000 event run on an expensive model is a bill, not a free audit. The durable runtime hides a lot of complexity, which is wonderful until you hit an edge case and have to reason about retries and idempotency anyway. Parts of the SDK live under the <code class="inl">beta</code> namespace and can move between versions, so pin your dependency. And while the platform leans toward lock in by design, the OpenTelemetry native tracing is a real escape hatch: your traces speak a standard other tools can read.</p>
 
-<!-- 26 -->
-<div class="diagram-container"><div class="card">
-  <div class="card-number">26 / 27</div>
-  <div class="card-title">The honest trade offs</div>
-  <div class="card-sub">No platform is free. Know the edges before you bet on it.</div>
-  <div class="card-body">
-    <div class="stack">
-      <div class="node amber"><div class="nt">Enterprise tier</div><div class="nd">the full Observability suite is Enterprise only today</div></div>
-      <div class="node amber"><div class="nt">A Judge is a model</div><div class="nd">it has its own error rate · validate against human labels</div></div>
-      <div class="node amber"><div class="nt">Campaigns cost money</div><div class="nd">10,000 events on a big model is a bill, not a free audit</div></div>
-      <div class="node amber"><div class="nt">beta namespace churn</div><div class="nd">pin your SDK version</div></div>
-      <div class="node green"><div class="nt">OTEL escape hatch</div><div class="nd">standard traces other tools can read · real portability</div></div>
-    </div>
-  </div>
-  <div class="attribution">Created by Han HELOIR YAN</div>
-</div></div>
+<figure class="shot diagram">
+  <img src="https://cozypet.github.io/mistral-ai-studio/images/diagram-26.png" alt="The honest trade offs">
+</figure>
 
 <h2>Run the loop once on something small</h2>
 <p class="lead">Do not try to operationalize your whole AI estate this quarter. Turn the flywheel exactly once, on one flow, and feel it work.</p>
@@ -967,24 +573,9 @@ client.beta.libraries.accesses.update(
 </ol>
 <p>That is the whole platform in miniature: see, score, curate, govern, repeat. Do it once and the gap between "the demo worked" and "it runs in production" stops being a leap of faith and becomes a loop you can turn on demand.</p>
 
-<!-- 27 -->
-<div class="diagram-container"><div class="card">
-  <div class="card-number">27 / 27</div>
-  <div class="card-title">Turn the loop once, on something small</div>
-  <div class="card-sub">Not the whole estate this quarter. One flow, end to end, until you feel it work.</div>
-  <div class="card-body">
-    <div class="stack">
-      <div class="row"><div class="num">1</div><div class="node grow" style="padding:10px 14px"><div class="nt">Instrument one flow</div><div class="nd">configure_telemetry, tag the use_case</div></div></div>
-      <div class="row"><div class="num">2</div><div class="node grow" style="padding:10px 14px"><div class="nt">Read ten real conversations</div><div class="nd">Explorer, filtered to that flow</div></div></div>
-      <div class="row"><div class="num">3</div><div class="node grow" style="padding:10px 14px"><div class="nt">Write one Judge</div><div class="nd">test it on a single record</div></div></div>
-      <div class="row"><div class="num">4</div><div class="node grow" style="padding:10px 14px"><div class="nt">Run one small Campaign</div><div class="nd">capped at a few hundred events</div></div></div>
-      <div class="row"><div class="num">5</div><div class="node grow" style="padding:10px 14px"><div class="nt">Freeze one Dataset</div><div class="nd">your regression baseline</div></div></div>
-      <div class="row"><div class="num">6</div><div class="node grow" style="padding:10px 14px"><div class="nt">Put the agent behind an alias</div><div class="nd">next rollback is one call</div></div></div>
-    </div>
-  </div>
-  <div class="callout callout-green">See, score, curate, govern, repeat. The whole platform in miniature.</div>
-  <div class="attribution">Created by Han HELOIR YAN</div>
-</div></div>
+<figure class="shot diagram">
+  <img src="https://cozypet.github.io/mistral-ai-studio/images/diagram-27.png" alt="Turn the loop once, on something small">
+</figure>
 
 <hr class="rule">
 
